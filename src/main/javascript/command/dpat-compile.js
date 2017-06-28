@@ -7,6 +7,7 @@ const fs = require("fs");
 const defaultWebpackConfig = require.resolve('../webpack/webpack.config-distribution');
 const __path = require("path");
 const project = require("../Project");
+const webpackPath = __path.resolve(__dirname, '../../../../node_modules/.bin/webpack');
 
 /**
  * @param {String} path
@@ -29,7 +30,8 @@ function action(path, cmd)
     process.exit(1);
   }
 
-  if (! dpProject.runCompile(projectDir, defaultWebpackConfig)) {
+
+  if (! dpProject.runCompile(projectDir, webpackPath, defaultWebpackConfig)) {
     process.exit(1);
   }
 

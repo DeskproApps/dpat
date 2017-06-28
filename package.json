@@ -2,7 +2,7 @@
   "name": "@deskproapps/dpat",
   "version": "0.3.4",
   "description": "deskpro apps tools",
-  "main": "src/main/javascript/command/dpat.js",
+  "main": "src/main/javascript/index.js",
   "bin": {
     "dpat": "./src/main/javascript/command/dpat.js",
     "dpat-webpack": "./node_modules/.bin/webpack",

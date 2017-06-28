@@ -1,35 +1,30 @@
 const path = require('path');
-
-let dpatRoot = require.resolve('@deskproapps/dpat');
-while (dpatRoot !== '/' && path.basename(dpatRoot) !== 'dpat') {
-  dpatRoot = path.dirname(dpatRoot);
-}
-
-const webpack = require('@deskproapps/dpat/node_modules/webpack');
-const ManifestPlugin = require('@deskproapps/dpat/node_modules/chunk-manifest-webpack-plugin');
-const ChunkManifestPlugin = require('@deskproapps/dpat/node_modules/webpack-chunk-hash');
-const WebpackChunkHash = require('@deskproapps/dpat/node_modules/webpack-chunk-hash');
-const ExtractTextPlugin = require('@deskproapps/dpat/node_modules/extract-text-webpack-plugin');
-
-const BuildUtils = require('@deskproapps/dpat/src/main/javascript/webpack/BuildUtils');
-const CopyAssets = require('@deskproapps/dpat/src/main/javascript/webpack/CopyAssets');
+const dpat = require('@deskproapps/dpat');
 
 module.exports = function (env) {
 
   const PROJECT_ROOT_PATH = env && env.DP_PROJECT_ROOT ? env.DP_PROJECT_ROOT : path.resolve(__dirname, '../../');
+  const DEBUG = env && env.NODE_ENV === 'development';
+
+  const buildManifest = new dpat.BuildManifest(
+    PROJECT_ROOT_PATH,
+    { distributionType: 'production', packagingType: 'cdn' }
+  );
+
+  const resources = dpat.Resources.copyDescriptors(buildManifest, PROJECT_ROOT_PATH);
+  const bundlePackages = dpat.BuildUtils.bundlePackages(PROJECT_ROOT_PATH, 'devDependencies');
+  const babelOptions = dpat.Babel.resolveOptions(PROJECT_ROOT_PATH, { babelrc: false });
+  // the relative path of the assets inside the distribution bundle
   const ASSET_PATH = 'assets';
-  const PRODUCTION = !env || !env.NODE_ENV || env.NODE_ENV === 'production';
 
-  const babelOptions = BuildUtils.resolveBabelOptions(PROJECT_ROOT_PATH, { babelrc: false });
-
-  const extractCssPlugin = new ExtractTextPlugin({ filename: '[name].css', publicPath: `/${ASSET_PATH}/`, allChunks: true });
+  const extractCssPlugin = new dpat.Webpack.ExtractTextPlugin({ filename: '[name].css', publicPath: `/${ASSET_PATH}/`, allChunks: true });
 
   const configParts = [{}];
   configParts.push({
-    devtool: PRODUCTION ? false : 'source-map',
+    devtool: DEBUG ? 'source-map' : false,
     entry: {
-        main: [ path.resolve(PROJECT_ROOT_PATH, 'src/webpack/entrypoint.js') ],
-        vendor: BuildUtils.autoVendorDependencies(PROJECT_ROOT_PATH)
+      main: [ path.resolve(PROJECT_ROOT_PATH, 'src/webpack/entrypoint.js') ],
+      vendor: bundlePackages
     },
     externals: {
       'react': 'React',
@@ -59,7 +54,7 @@ module.exports = function (env) {
       ],
     },
     output: {
-      pathinfo: !PRODUCTION,
+      pathinfo: DEBUG,
       chunkFilename: '[name].js',
       filename: '[name].js',
       path: path.resolve(PROJECT_ROOT_PATH, 'dist', ASSET_PATH)
@@ -67,32 +62,32 @@ module.exports = function (env) {
     plugins: [
       extractCssPlugin,
 
-      new webpack.DefinePlugin({ PRODUCTION: PRODUCTION }),
+      new dpat.Webpack.DefinePlugin({ DEBUG: DEBUG }),
 
       // for stable builds, in production we replace the default module index with the module's content hashe
-      new webpack.HashedModuleIdsPlugin(),
-      new webpack.optimize.UglifyJsPlugin({
-        sourceMap: !PRODUCTION,
-        compress: {unused: true, dead_code: true, warnings: false}
+      new dpat.Webpack.HashedModuleIdsPlugin(),
+      new dpat.Webpack.optimize.UglifyJsPlugin({
+        sourceMap: DEBUG,
+        compress: { unused: true, dead_code: true, warnings: false }
       }),
 
       // replace a standard webpack chunk hashing with custom (md5) one
-      new WebpackChunkHash(),
+      new dpat.Webpack.WebpackChunkHash(),
       // vendor libs + extracted manifest
-      new webpack.optimize.CommonsChunkPlugin({ name: ['vendor', 'manifest'], minChunks: Infinity }),
+      new dpat.Webpack.optimize.CommonsChunkPlugin({ name: ['vendor', 'manifest'], minChunks: Infinity }),
       // export map of chunks that will be loaded by the extracted manifest
-      new ChunkManifestPlugin({ filename: 'manifest.json', manifestVariable: 'webpackManifest' }),
+      new dpat.Webpack.ChunkManifestPlugin({ filename: 'manifest.json', manifestVariable: 'webpackManifest' }),
       // mapping of all source file names to their corresponding output file
-      new ManifestPlugin({ fileName: 'asset-manifest.json' }),
+      new dpat.Webpack.ManifestPlugin({ fileName: 'asset-manifest.json' }),
 
-      CopyAssets.copyWebpackPlugin(PROJECT_ROOT_PATH)('dist'),
+      new dpat.Webpack.CopyWebpackPlugin(resources, { debug: true, copyUnmodified: true }),
     ],
     resolve: {
       extensions: ['*', '.js', '.jsx', '.scss', '.css'],
-      modules: [ "node_modules", path.join(dpatRoot, "node_modules"), path.join(PROJECT_ROOT_PATH, "node_modules") ],
+      modules: [ "node_modules", dpat.path("node_modules"), path.join(PROJECT_ROOT_PATH, "node_modules") ],
     },
     resolveLoader: {
-      modules: [ "node_modules", path.join(dpatRoot, "node_modules"), path.join(PROJECT_ROOT_PATH, "node_modules") ]
+      modules: [ "node_modules", dpat.path("node_modules"), path.join(PROJECT_ROOT_PATH, "node_modules") ]
     },
     node: { fs: 'empty' },
     bail: true

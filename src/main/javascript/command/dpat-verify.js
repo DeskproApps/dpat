@@ -19,12 +19,12 @@ function action(path)
     if (validationResult) {
       console.log(`distribution at ${manifest} is valid`);
     } else {
-      console.error(`invalid distribution 1 at path ${manifest}`);
+      console.error(`invalid distribution at path ${manifest}`);
       process.exit(1);
     }
   } catch (e) {
     console.log(e);
-    console.error(`invalid distribution 2 at path ${manifest}`);
+    console.error(`invalid distribution at path ${manifest}`);
     process.exit(1);
   }
 }

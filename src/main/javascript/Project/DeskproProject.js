@@ -188,13 +188,13 @@ Run the following commands manually: mkdir -p ${distFolder}
     }
   }
 
-  runCompile (projectRoot, defaultWebpackConfig)
+  runCompile (projectRoot, webpackPath, defaultWebpackConfig)
   {
     const projectLocalConfig = path.resolve(projectRoot, "src", "webpack", "webpack.config-distribution.js");
     const webpackConfig = fs.existsSync(projectLocalConfig) ? projectLocalConfig : defaultWebpackConfig;
 
     const devServer = spawnSync(
-      'webpack'
+      webpackPath
       , ['--config', webpackConfig, '--env.DP_PROJECT_ROOT', projectRoot]
       , { cwd: projectRoot, stdio: 'inherit', env: { DP_PROJECT_ROOT: projectRoot, NODE_PATH: process.env.NODE_PATH } }
     );
@@ -229,10 +229,11 @@ Run the following commands manually: mkdir -p ${distFolder}
    * Starts a development server serving from <path> if path is a valid app project directory
    *
    * @param {String} projectRoot
+   * @param webpackDevServerPath
    * @param {String} defaultWebpackConfig
    * @returns {boolean}
    */
-  startDevServer(projectRoot, defaultWebpackConfig)
+  startDevServer(projectRoot, webpackDevServerPath, defaultWebpackConfig)
   {
       if (! this.validateProjectDirectory(projectRoot)) {
           return false;
@@ -242,7 +243,7 @@ Run the following commands manually: mkdir -p ${distFolder}
     const webpackConfig = fs.existsSync(projectLocalConfig) ? projectLocalConfig : defaultWebpackConfig;
 
       const devServer = spawn(
-          path.join('webpack-dev-server')
+        webpackDevServerPath
           , [
               '--config', webpackConfig,
               '--env.DP_PROJECT_ROOT', projectRoot
