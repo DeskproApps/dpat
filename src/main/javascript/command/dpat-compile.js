@@ -35,7 +35,7 @@ function action(path, cmd)
     process.exit(1);
   }
 
-  console.log('Project successfully compiled');
+  console.log('SUCCESS: Project compiled');
 }
 
 program

@@ -1,0 +1,23 @@
+{
+  "appVersion": "0.1.0",
+  "author": {
+    "name": "DeskPRO Apps",
+    "email": "apps@deskpro.com",
+    "url": "https://www.deskpro.com"
+  },
+  "description": "A foundation to get you started developing React DeskPro Apps with the best developer experience ",
+  "name": "@deskproapps/app-boilerplate-react",
+  "version": "2.0.0",
+  "title": "Your app title",
+  "isSingle": true,
+  "scope": "agent",
+  "targets": [
+    {
+      "target": "ticket-sidebar",
+      "url": "html/index.html"
+    }
+  ],
+  "settings": [],
+  "deskpro_api_tags": [],
+  "external_apis": []
+}

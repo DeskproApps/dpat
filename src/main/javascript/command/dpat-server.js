@@ -14,7 +14,7 @@ function action(path, port, cmd)
     const projectDir = __path.resolve(path);
 
     if (! project.startDevServer(projectDir, webpackDevServerPath, defaultWebpackConfig)) {
-        console.error(`could not start dev server at ${path}`);
+        console.error(`ERROR: could not start dev server at ${path}`);
         process.exit(1);
     }
 }

@@ -3,7 +3,7 @@
 const program = require("commander");
 const __path = require("path");
 
-const validator = require("../Package").newValidator();
+const Validator = require("../Package").Validator;
 
 function action(path)
 {
@@ -15,16 +15,16 @@ function action(path)
   }
 
   try {
-    const validationResult = validator.validate(manifest);
+    const validationResult = new Validator().validate(manifest);
     if (validationResult) {
-      console.log(`distribution at ${manifest} is valid`);
+      console.log(`SUCCESS: ${manifest} is valid distribution`);
     } else {
-      console.error(`invalid distribution at path ${manifest}`);
+      console.error(`ERROR: ${manifest} is not valid`);
       process.exit(1);
     }
   } catch (e) {
     console.log(e);
-    console.error(`invalid distribution at path ${manifest}`);
+    console.error(`ERROR: ${manifest} is not a valid distribution folder `);
     process.exit(1);
   }
 }

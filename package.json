@@ -11,7 +11,7 @@
   "scripts": {
     "release": "npm_bump",
     "dpat": "node src/main/javascript/command/dpat.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest src/test"
   },
   "repository": {
     "type": "git",
@@ -70,5 +70,8 @@
     "webpack-manifest-plugin": "1.1.0",
     "write-file-webpack-plugin": "4.0.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "exact": "^0.8.0",
+    "jest": "^20.0.4"
+  }
 }

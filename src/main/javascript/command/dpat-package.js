@@ -28,11 +28,11 @@ function action(path, cmd)
   try {
     packagePath = dpProject.runPackage(projectDir, packageFilename);
   } catch (e) {
-    console.log('failed to package');
+    console.log(`ERROR: failed to package the distribution folder: ${projectDir}`);
     process.exit(1);
   }
 
-  console.log(`Project successfully packaged: ${packagePath}`);
+  console.log(`SUCCESS: application package was created at: ${packagePath}`);
 }
 
 program

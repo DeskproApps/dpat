@@ -26,13 +26,12 @@ function action(path, cmd)
 
   const fsStats  = fs.statSync(distDir);
   if (! fsStats.isDirectory()) {
-    console.log(`Nothing to clean, ${distDir} is not a directory`);
+    console.log(`WARNING: Nothing to clean, ${distDir} is not a directory`);
     return;
   }
 
   shelljs.rm('-rf', `${distDir}/*`);
-
-  console.log(`Successfully cleaned previous build output`);
+  console.log(`SUCCESS: Cleaned previous build output`);
 }
 
 program

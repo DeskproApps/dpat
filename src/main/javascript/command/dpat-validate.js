@@ -2,16 +2,33 @@
 
 const fs = require("fs");
 const program = require("commander");
-const project = require("../Project").newInstance();
+
+const ManifestResolver = require('../Manifest').Resolver;
+const ManifestSyntaxValidator = require('../Manifest').SyntaxValidator;
 
 function action(manifest)
 {
-    if (project.validateManifest(manifest)) {
-        console.log("valid");
-    } else {
-        console.error("invalid");
-        process.exit(1);
-    }
+  const src = new ManifestResolver().resolveSourceFromPath(manifest);
+  if (!src) {
+    console.error(`ERROR: no manifest found at path: ${manifest}`);
+    process.exit(1);
+  }
+
+  let parsedManifest;
+  try {
+    parsedManifest = JSON.parse(fs.readFileSync(src.path, "utf8").toString("utf8"));
+  } catch (e) {
+    console.error(`ERROR: could not parse manifest at path: ${manifest}`);
+    process.exit(1);
+  }
+
+  const isValid = new ManifestSyntaxValidator().validateUsingDefaultSchema(parsedManifest);
+  if (!isValid) {
+    console.error(`ERROR: manifest at path : ${manifest} is not valid`);
+    process.exit(1);
+  }
+
+  console.log(`SUCCESS: ${manifest} is valid`);
 }
 
 program

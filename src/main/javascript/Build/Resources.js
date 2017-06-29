@@ -2,6 +2,9 @@
 const path = require('path');
 const fs = require('fs');
 
+const ManifestBuilder = require('../Manifest').Builder;
+const ManifestResolver = require('../Manifest').Resolver;
+
 /**
  * @param {BuildManifest} buildManifest
  * @return {Function}
@@ -28,13 +31,28 @@ function createProcessHtmlTransformer(buildManifest)
    * @return {Buffer}
    */
   return function (content, path) {
-    let replacedContent = content.toString();
+    let replacedContent = content.toString('utf8');
     for (const replacement of replacements) {
       replacedContent = replacedContent.replace(new RegExp(replacement.pattern), replacement.replacement)
     }
 
     return new Buffer(replacedContent, 'utf8');
   };
+}
+
+/**
+ * @param {Buffer} content
+ * @param {String} path
+ * @return {Buffer}
+ */
+function transformPackageJSON (content, path) {
+  const builder = new ManifestBuilder();
+  try {
+    const replacement = builder.setPropsFromPackageJson(content.toString('utf8')).build().toJSON();
+    return new Buffer(replacement, 'utf8');
+  } catch (e) {
+    return new Buffer(e.toString(), 'utf8');
+  }
 }
 
 function validatePattern(pattern) { return fs.existsSync(pattern.from); }
@@ -48,10 +66,10 @@ function appResources(buildManifest, projectRoot)
 {
   const forProduction = buildManifest.getDistributionType() === 'production';
   const destination = forProduction ? 'dist' : ['target', 'v' + buildManifest.getAppVersion(), 'files'].join(path.sep);
-  const manifestJsonDestination = forProduction ? 'dist' : 'target';
+  const manifestJsonDestination = path.join(projectRoot, forProduction ? 'dist' : 'target', 'manifest.json');
 
   // patterns for copying static files from the app's source
-  return [
+  const patterns = [
     {
       from: path.resolve(projectRoot, 'src', 'main', 'html'),
       to: path.join(projectRoot, destination, 'html'),
@@ -67,13 +85,23 @@ function appResources(buildManifest, projectRoot)
       from: path.resolve(projectRoot, 'src', 'main', 'docs', 'README.md'),
       to: path.join(projectRoot, destination, 'README.md'),
       force: true
-    },
-    {
-      from: path.resolve(projectRoot, 'manifest.json'),
-      to: path.join(projectRoot, manifestJsonDestination, 'manifest.json'),
-      force: true
     }
   ];
+
+  const manifestSource = new ManifestResolver().resolveSourceFromDirectory(projectRoot);
+  if (!manifestSource) {
+    return patterns;
+  }
+
+  const appManifestPattern = {
+    from: manifestSource.path,
+    to: manifestJsonDestination
+  };
+
+  if (manifestSource.name === 'package.json') {
+    appManifestPattern.transform = transformPackageJSON;
+  }
+  return patterns.concat(appManifestPattern);
 }
 
 /**

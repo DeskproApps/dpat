@@ -1,13 +1,14 @@
 const fs = require("fs");
 const path = require("path");
 
-const SchemaValidator = require("jsonschema").Validator;
+const ManifestResolver = require('../Manifest').Resolver;
+const ManifestSyntaxValidator = require('../Manifest').SyntaxValidator;
 
 class Validator
 {
-  constructor (options)
+  constructor ()
   {
-    this.props = { manifestFilename: 'manifest.json', manifestSchema: options.manifestSchema };
+    this.props = { manifestFilename: 'manifest.json' };
   }
 
   /**
@@ -16,49 +17,35 @@ class Validator
    */
   validate(manifest)
   {
-    if (!fs.existsSync(manifest)) {
-      return false;
+    const src = new ManifestResolver().resolveSourceFromPath(manifest);
+    if (!src) { return false; }
+
+    if (src.name !== 'manifest.json') {
+      throw new Error(`Expected an absolute path to file named manifest.json, got instead: ${manifest}`);
     }
 
-    let manifestPath = null;
-    let stats = fs.statSync(manifest);
-    if (stats.isDirectory()) {
-      manifestPath = path.join(manifest, this.props.manifestFilename);
-      stats = fs.existsSync(manifestPath) ? fs.statSync(manifestPath) : null;
-    }
-
-    if (!stats) { throw new Error(`Missing file: ${manifestPath}`); }
-
-    if (!stats.isFile()) { throw new Error(`Path is not a file: ${manifestPath}`); }
-
-    if ('.json' !== path.extname(manifestPath)) { throw new Error(`Only .json files can be validated now: ${manifestPath}`); }
-
-    let contents = fs.readFileSync(manifestPath, "utf8").toString("utf8");
-    let parsedManifest = JSON.parse(contents);
+    let parsedManifest;
+    try {
+      parsedManifest = JSON.parse(fs.readFileSync(src.path, "utf8").toString("utf8"));
+    } catch (e) { /** ignore it **/ }
 
     if (!parsedManifest) {
       throw new Error('could not parse manifest');
     }
 
-    let syntaxValidation = (new SchemaValidator()).validate(parsedManifest, this.props.manifestSchema);
-    if (0 !== syntaxValidation.errors.length) {
+    const isSyntaxValid = new ManifestSyntaxValidator().validateUsingDefaultSchema(parsedManifest);
+    if (!isSyntaxValid) {
       return false;
     }
 
     //verify target files exist
-    let rootDir = path.parse(manifestPath).dir;
-    const targetFiles = [];
-    for (let key of Object.keys(parsedManifest.targets)) {
-      targetFiles.push( path.resolve(rootDir, parsedManifest.targets[key].url) );
-    }
+    let rootDir = path.parse(src.path).dir;
+    const targetFiles = Object.keys(parsedManifest.targets).map(function (key) {
+      return path.resolve(rootDir, parsedManifest.targets[key].url);
+    });
+    const missingTargetFiles = targetFiles.filter(function (file) { return !fs.existsSync(file); });
 
-    for (let file of targetFiles) {
-      if (!fs.existsSync(file)) {
-        return false;
-      }
-    }
-
-    return true;
+    return missingTargetFiles.length === 0;
   }
 }
 

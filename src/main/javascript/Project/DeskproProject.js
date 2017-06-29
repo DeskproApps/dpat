@@ -144,7 +144,7 @@ Run the following command manually: npm install --save-exact ${absoluteDestinati
 
       archive.directory(path.join(projectDistDir, 'assets'), 'assets', {});
       archive.directory(path.join(projectDistDir, 'html'), 'html', {});
-      archive.file(path.join(projectRoot, 'manifest.json'), { name: 'manifest.json' });
+      archive.file(path.join(projectDistDir, 'manifest.json'), { name: 'manifest.json' });
 
       archive.pipe(output);
       archive.finalize();

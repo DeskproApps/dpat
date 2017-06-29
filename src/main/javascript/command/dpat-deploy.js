@@ -27,12 +27,12 @@ function action(path, instance, cmd, done)
   }
 
   if (! cmd.username) {
-    console.log('error: missing required argument: --username');
+    console.log('ERROR: missing required argument: --username');
     process.exit(1);
   }
 
   if (! cmd.password) {
-    console.log('error: missing required argument: --password');
+    console.log('ERROR: missing required argument: --password');
     process.exit(1);
   }
 
@@ -41,12 +41,12 @@ function action(path, instance, cmd, done)
   // TODO verify project dir is a valid dp apps project
   // TODO handle failure
   if (! dpProject.runPrepareCompile(projectDir)) {
-    console.log('failed to prepare for compile');
+    console.log('ERROR: failed to prepare for compile');
     process.exit(1);
   }
 
   if (! dpProject.runCompile(projectDir, defaultWebpackConfig)) {
-    console.log('failed to compile');
+    console.log('ERROR: failed to compile');
     process.exit(1);
   }
 
@@ -54,7 +54,7 @@ function action(path, instance, cmd, done)
   try {
     packagePath = dpProject.runPackage(projectDir, packageFilename);
   } catch (e) {
-    console.log('failed to package');
+    console.log('ERROR: failed to package');
     process.exit(1);
   }
 
@@ -69,11 +69,11 @@ function action(path, instance, cmd, done)
     return dpProject.runDeploy(packagePath, dpClient)
   })
   .then(function () {
-    console.log('Successfully deployed project: ' + projectDir + ' to instance: ' + instance);
+    console.log(`SUCCESS: Application project: ${projectDir}  deployed  to instance ${instance}`);
     done();
   })
   .catch(function(e) {
-    console.log(e, 'failed to deploy');
+    console.log(e, 'ERROR: failed to deploy');
     process.exit(1);
     done();
   })

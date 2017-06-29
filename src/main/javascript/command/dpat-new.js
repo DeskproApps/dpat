@@ -12,23 +12,23 @@ function action(path, cmd) {
 
   if (!fs.existsSync(path)) {
     project.initialize(path, sourceRepository);
-    console.log('project initialized');
+    console.log(`SUCCESS: project initialized in: ${path}`);
     return;
   }
 
   if (!project.validateInitializeDirectory(path)) {
-      console.error(`${path} is not a valid application directory`);
+      console.error(`ERROR: ${path} is not a valid application directory`);
       process.exit(1);
   }
 
   const destinationEmpty = 0 === fs.readdirSync(path).length;
   if (!destinationEmpty && !cmd.force) {
-      console.error(`${path} is not empty. use --force to create anyway`);
+      console.error(`ERROR: ${path} is not empty. use --force to create anyway`);
       process.exit(1);
   }
 
   project.initialize(path, sourceRepository);
-  console.log('Project initialized');
+  console.log(`SUCCESS: project initialized in: ${path}`);
 }
 
 program
