@@ -7,7 +7,9 @@ const spawn = require('child_process').spawn;
 const spawnSync = require('child_process').spawnSync;
 const archiver = require("archiver");
 
-const Validator = require("jsonschema").Validator;
+const ManifestResolver = require('../Manifest').Resolver;
+const ManifestSyntaxValidator = require('../Manifest').SyntaxValidator;
+const ManifestBuilder = require('../Manifest').Builder;
 
 class DeskproProject
 {
@@ -22,32 +24,7 @@ class DeskproProject
         this.binPath = binPath;
     }
 
-    /**
-     * @param {String} manifestPath
-     * @returns {boolean}
-     */
-    validateManifest(manifestPath)
-    {
-        if (!fs.existsSync(manifestPath)) {
-            return false;
-        }
-
-        let contents = fs.readFileSync(manifestPath, "utf8").toString("utf8");
-        let manifest = JSON.parse(contents);
-
-        if (!manifest) {
-            return false;
-        }
-
-        let syntaxValidation = (new Validator()).validate(manifest, this.manifestSchema);
-        if (0 !== syntaxValidation.errors.length) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
+     /**
      * @param {String} path
      * @returns {boolean}
      */
@@ -75,14 +52,19 @@ class DeskproProject
      */
     validateProjectDirectory(dir)
     {
-        if (! this.validateInitializeDirectory(dir)) {
-            return false;
-        }
+      if (! this.validateInitializeDirectory(dir)) {
+          return false;
+      }
 
-        const manifestPath = path.resolve(dir, "manifest.json");
-        return fs.existsSync(manifestPath);
-
-        //return this.validateManifest(manifestPath);
+      // validate manifest syntax
+      const src = new ManifestResolver().resolveSourceFromPath(dir);
+      if (!src) { return false; }
+      try {
+        const manifest = new ManifestBuilder().setPropsFromSource(src).build();
+        return new ManifestSyntaxValidator().validateUsingDefaultSchema(manifest.toJSON());
+      } catch (e) {
+        return false;
+      }
     }
 
     initialize(destination, sourceRepository)

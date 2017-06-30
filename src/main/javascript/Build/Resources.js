@@ -45,11 +45,11 @@ function createProcessHtmlTransformer(buildManifest)
  * @param {String} path
  * @return {Buffer}
  */
-function transformPackageJSON (content, path) {
-  const builder = new ManifestBuilder();
+function transformPackageJSON (content, path)
+{
   try {
-    const replacement = builder.setPropsFromPackageJson(content.toString('utf8')).build().toJSON();
-    return new Buffer(replacement, 'utf8');
+    const manifest = new ManifestBuilder().setPropsFromPackageJson(content.toString('utf8')).build();
+    return new Buffer(JSON.stringify(manifest), 'utf8');
   } catch (e) {
     return new Buffer(e.toString(), 'utf8');
   }

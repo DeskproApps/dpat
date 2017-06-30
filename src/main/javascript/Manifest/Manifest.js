@@ -1,7 +1,7 @@
 class Manifest
 {
   /**
-   * @param {ManifestProps} props
+   * @param {Object} props
    * @param source
    */
   constructor(props, source)
@@ -17,9 +17,8 @@ class Manifest
 
   getSourceFile() { return this.source.file; }
 
-  toJSON() { return JSON.stringify(this.props); }
-
-  toJS() { return JSON.parse(JSON.stringify(this.props)); }
+  // see https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
+  toJSON() { return JSON.parse(JSON.stringify(this.props)); }
 }
 
 module.exports = Manifest;

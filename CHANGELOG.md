@@ -1,3 +1,6 @@
+## Upcoming
+* [FIX] Manifest validation error prevents dev server from starting
+
 ## v0.4.2 - 2017-06-29
 
 * [FEATURE] Use deskpro key in package.json to generate app manifest

@@ -30,14 +30,18 @@ class Builder
     this.props = {};
   }
 
+  /**
+   * @param {{}} src
+   * @return {Builder}
+   */
   setPropsFromSource(src)
   {
     const content = JSON.parse(fs.readFileSync(src.path, 'utf8'));
-    if (src.type === 'package.json') {
+    if (src.name === 'package.json') {
       return this.setPropsFromPackageJson(content)
     }
 
-    if (src.type === 'manifest.json') {
+    if (src.name === 'manifest.json') {
       return this.setPropsFromManifestJson(content)
     }
 
@@ -78,6 +82,9 @@ class Builder
     return this;
   }
 
+  /**
+   * @return {Manifest}
+   */
   build ()
   {
     const props = JSON.parse(JSON.stringify(this.props));
