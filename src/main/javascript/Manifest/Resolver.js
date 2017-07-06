@@ -38,7 +38,7 @@ class Resolver
       },
     ].filter(function (src) {
       return fs.existsSync(src.path);
-    }).pop();
+    }).shift();
 
     if (typeof source !== 'object') { return null; }
     return source;

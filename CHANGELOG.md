@@ -1,3 +1,6 @@
+## Upcoming
+* [FIX] The algorithm that resolves the source for the application manifest does not choose manifest.json when file  present
+
 ## v0.4.3 - 2017-06-30
 * [FIX] Manifest validation error prevents dev server from starting
 
