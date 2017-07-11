@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DeskproApps/dpat.git"
+    "url": "git+https://github.com/Deskpro/deskproapps-dpat.git"
   },
   "keywords": [
     "deskpro",
@@ -24,9 +24,9 @@
   "author": "DeskPRO Ltd.",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/DeskproApps/dpat/issues"
+    "url": "https://github.com/Deskpro/deskproapps-dpat/issues"
   },
-  "homepage": "https://github.com/DeskproApps/dpat#readme",
+  "homepage": "https://github.com/Deskpro/deskproapps-dpat#readme",
   "dependencies": {
     "archiver": "1.3.0",
     "babel-cli": "6.24.1",

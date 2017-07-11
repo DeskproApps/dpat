@@ -9,4 +9,4 @@ It is best to install this package globally
 
 ## Documentation
 
-View online docs at: https://deskproapps.github.io/dpat/
+View online docs at: https://deskpro.github.io/deskproapps-dpat/

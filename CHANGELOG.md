@@ -1,3 +1,7 @@
+## Upcoming
+* [MAINTENANCE] update links after transferring the repository to the `Deskpro` organization
+* [MAINTENANCE] enable travis ci integration
+
 ## v0.4.4 - 2017-07-06
 * [FIX] The algorithm that resolves the source for the application manifest does not choose manifest.json when that file is present
 
