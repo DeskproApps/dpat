@@ -175,10 +175,16 @@ Run the following commands manually: mkdir -p ${distFolder}
     const projectLocalConfig = path.resolve(projectRoot, "src", "webpack", "webpack.config-distribution.js");
     const webpackConfig = fs.existsSync(projectLocalConfig) ? projectLocalConfig : defaultWebpackConfig;
 
+    const env = Object.assign(
+      {},
+      process.env,
+      { DP_PROJECT_ROOT: projectRoot }
+    );
+
     const devServer = spawnSync(
       webpackPath
       , ['--config', webpackConfig, '--env.DP_PROJECT_ROOT', projectRoot]
-      , { cwd: projectRoot, stdio: 'inherit', env: { DP_PROJECT_ROOT: projectRoot, NODE_PATH: process.env.NODE_PATH } }
+      , { cwd: projectRoot, stdio: 'inherit', env: env }
     );
 
     if (devServer.status === 0) {
@@ -224,13 +230,19 @@ Run the following commands manually: mkdir -p ${distFolder}
     const projectLocalConfig = path.resolve(projectRoot, "src", "webpack", "webpack.config-development.js");
     const webpackConfig = fs.existsSync(projectLocalConfig) ? projectLocalConfig : defaultWebpackConfig;
 
+      const env = Object.assign(
+        {},
+        process.env,
+        { DP_PROJECT_ROOT: projectRoot }
+      );
+
       const devServer = spawn(
         webpackDevServerPath
           , [
               '--config', webpackConfig,
               '--env.DP_PROJECT_ROOT', projectRoot
           ]
-          , { cwd: projectRoot, stdio: 'inherit', env: { DP_PROJECT_ROOT: projectRoot, NODE_PATH: process.env.NODE_PATH } }
+          , { cwd: projectRoot, stdio: 'inherit', env: env }
       );
 
       devServer.on('exit', (code) => {
