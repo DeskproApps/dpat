@@ -69,7 +69,6 @@
     "webpack-dev-server": "2.4.2",
     "webpack-manifest-plugin": "1.1.0",
     "write-file-webpack-plugin": "4.0.2",
-    "exact": "^0.8.0",
     "jest": "^20.0.4"
   }
 }
