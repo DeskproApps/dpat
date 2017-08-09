@@ -183,7 +183,12 @@ Run the following commands manually: mkdir -p ${distFolder}
     const runtimeConfig = fs.existsSync(localConfig) ? localConfig : webpackConfig;
     const args = ['--config', runtimeConfig, '--env.DP_PROJECT_ROOT', projectRoot];
 
-    const nodePath = process.env.NODE_PATH.split(path.delimiter).concat(modulePaths).join(path.delimiter);
+    let nodePath;
+    if (process.env.NODE_PATH) {
+      nodePath = process.env.NODE_PATH.split(path.delimiter).concat(modulePaths).join(path.delimiter);
+    } else {
+      nodePath = modulePaths.join(path.delimiter);
+    }
     const env = { DP_PROJECT_ROOT: projectRoot, NODE_PATH: nodePath };
     const runtimeEnv = Object.assign({}, process.env, env);
 
@@ -210,7 +215,12 @@ Run the following commands manually: mkdir -p ${distFolder}
     const testRoot = path.resolve(projectRoot, 'src', 'test');
     args.push(testRoot);
 
-    const nodePath = process.env.NODE_PATH.split(path.delimiter).concat(modulePaths).join(path.delimiter);
+    let nodePath;
+    if (process.env.NODE_PATH) {
+      nodePath = process.env.NODE_PATH.split(path.delimiter).concat(modulePaths).join(path.delimiter);
+    } else {
+      nodePath = modulePaths.join(path.delimiter);
+    }
     const env = { DP_PROJECT_ROOT: projectRoot, NODE_PATH: nodePath };
     const runtimeEnv = Object.assign({}, process.env, env);
 
@@ -259,7 +269,12 @@ Run the following commands manually: mkdir -p ${distFolder}
     const runtimeConfig = fs.existsSync(localConfig) ? localConfig : webpackConfig;
     const args = ['--config', runtimeConfig, '--env.DP_PROJECT_ROOT', projectRoot];
 
-    const nodePath = process.env.NODE_PATH.split(path.delimiter).concat(modulePaths).join(path.delimiter);
+    let nodePath;
+    if (process.env.NODE_PATH) {
+      nodePath = process.env.NODE_PATH.split(path.delimiter).concat(modulePaths).join(path.delimiter);
+    } else {
+      nodePath = modulePaths.join(path.delimiter);
+    }
     const env = { DP_PROJECT_ROOT: projectRoot, NODE_PATH: nodePath };
     const runtimeEnv = Object.assign({}, process.env, env);
 

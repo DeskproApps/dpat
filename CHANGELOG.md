@@ -1,3 +1,6 @@
+## Upcoming
+* [FIX] create NODE_PATH variable if not set
+
 ## v0.5.0 - 2017-08-09
 * [FEATURE] add dpat test command to help with running tests
 * [MAINTENANCE] add dpat's node_modules dir to NODE_PATH env variable  
