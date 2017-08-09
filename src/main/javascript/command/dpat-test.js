@@ -4,12 +4,11 @@ const program = require("commander");
 const archiver = require("archiver");
 const fs = require("fs");
 
-const defaultWebpackConfig = require.resolve('../webpack/webpack.config-distribution');
 const __path = require("path");
-const webpackPath = __path.resolve(__dirname, '../../../../node_modules/.bin/webpack');
+const project = require("../Project");
+const jestPath = __path.resolve(__dirname, '../../../../node_modules/.bin/jest');
 const dpatModules = __path.resolve(__dirname, '../../../../node_modules');
 
-const project = require("../Project");
 /**
  * @param {String} path
  * @param {Command} cmd
@@ -22,15 +21,10 @@ function action(path, cmd)
   } else {
     projectDir = __path.resolve('.');
   }
-
   const dpProject = project.newInstance();
 
-  if (! dpProject.runPrepareCompile(projectDir)) {
-    process.exit(1);
-  }
-
-  const runConfig = { webpack: webpackPath, webpackConfig: defaultWebpackConfig, modulePaths: [ dpatModules ]};
-  if (! dpProject.runCompile(projectDir, runConfig)) {
+  const runConfig = { jest: jestPath, modulePaths: [ dpatModules ] };
+  if (! dpProject.runTests(projectDir, runConfig)) {
     process.exit(1);
   }
 

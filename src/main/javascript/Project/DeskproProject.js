@@ -116,23 +116,23 @@ Run the following command manually: npm install --save-exact ${absoluteDestinati
    * @param {String} packageFilename
    * @return {String} the full path to the created artifact
    */
-    runPackage (projectRoot, packageFilename)
-    {
-      const projectDistDir = path.join(projectRoot, 'dist');
-      const output = fs.createWriteStream(path.join(projectDistDir, packageFilename));
-      const archive = archiver('zip', {
-        store: true // Sets the compression method to STORE.
-      });
+  runPackage (projectRoot, packageFilename)
+  {
+    const projectDistDir = path.join(projectRoot, 'dist');
+    const output = fs.createWriteStream(path.join(projectDistDir, packageFilename));
+    const archive = archiver('zip', {
+      store: true // Sets the compression method to STORE.
+    });
 
-      archive.directory(path.join(projectDistDir, 'assets'), 'assets', {});
-      archive.directory(path.join(projectDistDir, 'html'), 'html', {});
-      archive.file(path.join(projectDistDir, 'manifest.json'), { name: 'manifest.json' });
+    archive.directory(path.join(projectDistDir, 'assets'), 'assets', {});
+    archive.directory(path.join(projectDistDir, 'html'), 'html', {});
+    archive.file(path.join(projectDistDir, 'manifest.json'), { name: 'manifest.json' });
 
-      archive.pipe(output);
-      archive.finalize();
+    archive.pipe(output);
+    archive.finalize();
 
-      return path.join(projectRoot, 'dist', packageFilename);
-    }
+    return path.join(projectRoot, 'dist', packageFilename);
+  }
 
   runPrepareCompile(projectDir)
   {
@@ -170,34 +170,62 @@ Run the following commands manually: mkdir -p ${distFolder}
     }
   }
 
-  runCompile (projectRoot, webpackPath, defaultWebpackConfig)
+  /**
+   * @param {String} projectRoot
+   * @param {Object} runConfig
+   * @return {boolean}
+   */
+  runCompile (projectRoot, runConfig)
   {
-    const projectLocalConfig = path.resolve(projectRoot, "src", "webpack", "webpack.config-distribution.js");
-    const webpackConfig = fs.existsSync(projectLocalConfig) ? projectLocalConfig : defaultWebpackConfig;
+    const {webpack, webpackConfig, modulePaths} = runConfig;
 
-    const env = Object.assign(
-      {},
-      process.env,
-      { DP_PROJECT_ROOT: projectRoot }
-    );
+    const localConfig = path.resolve(projectRoot, "src", "webpack", "webpack.config-distribution.js");
+    const runtimeConfig = fs.existsSync(localConfig) ? localConfig : webpackConfig;
+    const args = ['--config', runtimeConfig, '--env.DP_PROJECT_ROOT', projectRoot];
 
-    const devServer = spawnSync(
-      webpackPath
-      , ['--config', webpackConfig, '--env.DP_PROJECT_ROOT', projectRoot]
-      , { cwd: projectRoot, stdio: 'inherit', env: env }
-    );
+    const nodePath = process.env.NODE_PATH.split(path.delimiter).concat(modulePaths).join(path.delimiter);
+    const env = { DP_PROJECT_ROOT: projectRoot, NODE_PATH: nodePath };
+    const runtimeEnv = Object.assign({}, process.env, env);
 
-    if (devServer.status === 0) {
+    const childProcess = spawnSync(webpack, args, { cwd: projectRoot, stdio: 'inherit', env: runtimeEnv });
+    if (childProcess.status === 0) {
       return true;
     }
-    console.error(devServer.error);
+    console.error(childProcess.error);
+    return false;
+  }
+
+  /**
+   * @param {String} projectRoot
+   * @param {Object} runConfig
+   * @return {boolean}
+   */
+  runTests (projectRoot, runConfig)
+  {
+    const { jest, modulePaths } = runConfig;
+
+    const jestLocalConfig = path.resolve(projectRoot, ".jestrc.json");
+    const args = fs.existsSync(jestLocalConfig) ? [ '-c', jestLocalConfig ] : [];
+
+    const testRoot = path.resolve(projectRoot, 'src', 'test');
+    args.push(testRoot);
+
+    const nodePath = process.env.NODE_PATH.split(path.delimiter).concat(modulePaths).join(path.delimiter);
+    const env = { DP_PROJECT_ROOT: projectRoot, NODE_PATH: nodePath };
+    const runtimeEnv = Object.assign({}, process.env, env);
+
+    const childProcess = spawnSync(jest, args, { cwd: projectRoot, stdio: 'inherit', env: runtimeEnv });
+    if (childProcess.status === 0) {
+      return true;
+    }
+    console.error(childProcess.error);
     return false;
   }
 
   /**
    * @param {String} packagePath
    * @param {DeskproApiClient} authenticatedClient
-   * @return {Promise.<TResult>}
+   * @return {Promise.<*>}
    */
   runDeploy (packagePath, authenticatedClient)
   {
@@ -217,39 +245,28 @@ Run the following commands manually: mkdir -p ${distFolder}
    * Starts a development server serving from <path> if path is a valid app project directory
    *
    * @param {String} projectRoot
-   * @param webpackDevServerPath
-   * @param {String} defaultWebpackConfig
+   * @param {Object} runConfig
    * @returns {boolean}
    */
-  startDevServer(projectRoot, webpackDevServerPath, defaultWebpackConfig)
+  startDevServer(projectRoot, runConfig)
   {
-      if (! this.validateProjectDirectory(projectRoot)) {
-          return false;
-      }
+    if (! this.validateProjectDirectory(projectRoot)) {
+        return false;
+    }
+    const {webpackDev, webpackConfig, modulePaths} = runConfig;
 
-    const projectLocalConfig = path.resolve(projectRoot, "src", "webpack", "webpack.config-development.js");
-    const webpackConfig = fs.existsSync(projectLocalConfig) ? projectLocalConfig : defaultWebpackConfig;
+    const localConfig = path.resolve(projectRoot, "src", "webpack", "webpack.config-development.js");
+    const runtimeConfig = fs.existsSync(localConfig) ? localConfig : webpackConfig;
+    const args = ['--config', runtimeConfig, '--env.DP_PROJECT_ROOT', projectRoot];
 
-      const env = Object.assign(
-        {},
-        process.env,
-        { DP_PROJECT_ROOT: projectRoot }
-      );
+    const nodePath = process.env.NODE_PATH.split(path.delimiter).concat(modulePaths).join(path.delimiter);
+    const env = { DP_PROJECT_ROOT: projectRoot, NODE_PATH: nodePath };
+    const runtimeEnv = Object.assign({}, process.env, env);
 
-      const devServer = spawn(
-        webpackDevServerPath
-          , [
-              '--config', webpackConfig,
-              '--env.DP_PROJECT_ROOT', projectRoot
-          ]
-          , { cwd: projectRoot, stdio: 'inherit', env: env }
-      );
+    const devServer = spawn(webpackDev, args, { cwd: projectRoot, stdio: 'inherit', env: runtimeEnv });
 
-      devServer.on('exit', (code) => {
-          console.log(`dpat server exited with code ${code}`);
-      });
-
-      return true;
+    devServer.on('exit', (code) => { console.log(`dpat server exited with code ${code}`); });
+    return true;
   }
 }
 

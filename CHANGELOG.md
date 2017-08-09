@@ -1,3 +1,7 @@
+## Upcoming
+* [FEATURE] add dpat test command to help with running tests
+* [MAINTENANCE] add dpat's node_modules dir to NODE_PATH env variable  
+
 ## v0.4.11 - 2017-08-02
 * [MAINTENANCE] add travis publishing options to package.json 
 

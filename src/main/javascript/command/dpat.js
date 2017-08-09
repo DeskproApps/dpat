@@ -11,5 +11,6 @@ program
     .command("compile <path>", "compiles the application repository stored at [path]")
     .command("verify <path>", "verifies the distribution folder specified by [path] is valid")
     .command("clean <path>", "removes any previous build output")
+    .command("test <path>", "runs the project's tests")
     .command("deploy [path] <instance>", "packages a distribution and deploys the package to a deskpro instance")
     .parse(process.argv);
