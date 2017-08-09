@@ -1,3 +1,6 @@
+## Upcoming
+* [FEATURE] add babel support for async/await
+
 ## v0.5.1 - 2017-08-09
 * [FIX] create NODE_PATH variable if not set
 
