@@ -14,12 +14,12 @@ const ManifestBuilder = require('../Manifest').Builder;
 class DeskproProject
 {
   /**
-   * @param {Object} manifestSchema
+   * @param {SchemaRegistry} schemaRegistry
    * @param {String} source
    * @param {String} binPath
    */
-    constructor(manifestSchema, source, binPath) {
-        this.manifestSchema = manifestSchema;
+    constructor(schemaRegistry, source, binPath) {
+        this.schemaRegistry = schemaRegistry;
         this.source = source;
         this.binPath = binPath;
     }
@@ -61,7 +61,7 @@ class DeskproProject
       if (!src) { return false; }
       try {
         const manifest = new ManifestBuilder().setPropsFromSource(src).build();
-        return new ManifestSyntaxValidator().validateUsingDefaultSchema(manifest.toJSON());
+        return new ManifestSyntaxValidator().validateManifest(manifest);
       } catch (e) {
         return false;
       }

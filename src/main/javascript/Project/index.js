@@ -1,7 +1,7 @@
 'use strict';
 
 const path = require('path');
-const manifestSchema = require('../../resources/manifest.schema.json');
+const SchemaRegistry = require("../Manifest/SchemaRegistry");
 const DeskproProject = require('./DeskproProject');
 const DeskproApiClient = require('./DeskproApiClient');
 
@@ -14,7 +14,7 @@ exports = module.exports =
      * @returns {DeskproProject}
      */
     newInstance: function () {
-        return new DeskproProject(manifestSchema, source, binPath);
+        return new DeskproProject(SchemaRegistry, source, binPath);
     },
     /**
      * @param {String} dpInstanceUrl

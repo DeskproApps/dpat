@@ -3,6 +3,7 @@ const path = require("path");
 
 const ManifestResolver = require('../Manifest').Resolver;
 const ManifestSyntaxValidator = require('../Manifest').SyntaxValidator;
+const Manifest = require('../Manifest').Manifest;
 
 class Validator
 {
@@ -33,7 +34,7 @@ class Validator
       throw new Error('could not parse manifest');
     }
 
-    const isSyntaxValid = new ManifestSyntaxValidator().validateUsingDefaultSchema(parsedManifest);
+    const isSyntaxValid = new ManifestSyntaxValidator().validateManifest(new Manifest(parsedManifest));
     if (!isSyntaxValid) {
       return false;
     }

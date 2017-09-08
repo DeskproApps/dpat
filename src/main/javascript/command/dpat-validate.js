@@ -3,6 +3,7 @@
 const fs = require("fs");
 const program = require("commander");
 
+const Manifest = require('../Manifest').Manifest;
 const ManifestResolver = require('../Manifest').Resolver;
 const ManifestSyntaxValidator = require('../Manifest').SyntaxValidator;
 
@@ -21,10 +22,12 @@ function action(manifest)
     console.error(`ERROR: could not parse manifest at path: ${manifest}`);
     process.exit(1);
   }
-
-  const isValid = new ManifestSyntaxValidator().validateUsingDefaultSchema(parsedManifest);
+  
+  const syntaxValidator = new ManifestSyntaxValidator();
+  const isValid = syntaxValidator.validateManifest(new Manifest(parsedManifest));
   if (!isValid) {
-    console.error(`ERROR: manifest at path : ${manifest} is not valid`);
+    console.error(`ERROR: manifest at path "${manifest}" is not valid`);
+    console.error(syntaxValidator.getErrorsAsString());
     process.exit(1);
   }
 
