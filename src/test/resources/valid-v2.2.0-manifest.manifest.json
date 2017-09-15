@@ -1,0 +1,40 @@
+{
+  "appVersion": "0.2.3",
+  "author": {
+    "name": "DeskPRO Apps",
+    "email": "apps@deskpro.com",
+    "url": "https://www.deskpro.com"
+  },
+  "description": "app-description",
+  "name": "package-name",
+  "version": "2.2.0",
+  "title": "app-title",
+  "isSingle": true,
+  "scope": "agent",
+  "targets": [
+    { "target": "ticket-sidebar", "url": "html/index.html" }
+  ],
+  "storage": [
+    {
+      "name": "install",
+      "isBackendOnly": false,
+      "permRead": "EVERYBODY",
+      "permWrite": "OWNER"
+    },
+    {
+      "name": "auth",
+      "isBackendOnly": false,
+      "permRead": "OWNER",
+      "permWrite": "OWNER"
+    },
+    {
+      "name": "cards",
+      "isBackendOnly": false,
+      "permRead": "EVERYBODY",
+      "permWrite": "EVERYBODY"
+    }
+  ],
+  "settings": [],
+  "deskpro_api_tags": [],
+  "external_apis": []
+}

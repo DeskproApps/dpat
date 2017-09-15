@@ -14,12 +14,10 @@ const ManifestBuilder = require('../Manifest').Builder;
 class DeskproProject
 {
   /**
-   * @param {SchemaRegistry} schemaRegistry
    * @param {String} source
    * @param {String} binPath
    */
-    constructor(schemaRegistry, source, binPath) {
-        this.schemaRegistry = schemaRegistry;
+    constructor(source, binPath) {
         this.source = source;
         this.binPath = binPath;
     }
@@ -181,7 +179,7 @@ Run the following commands manually: mkdir -p ${distFolder}
 
     const localConfig = path.resolve(projectRoot, "src", "webpack", "webpack.config-distribution.js");
     const runtimeConfig = fs.existsSync(localConfig) ? localConfig : webpackConfig;
-    const args = ['--config', runtimeConfig, '--env.DP_PROJECT_ROOT', projectRoot];
+    const args = ['--config', runtimeConfig, '--env.DP_PROJECT_ROOT', projectRoot, '--display-error-details'];
 
     let nodePath;
     if (process.env.NODE_PATH) {

@@ -22,7 +22,7 @@ function action(manifest)
     console.error(`ERROR: could not parse manifest at path: ${manifest}`);
     process.exit(1);
   }
-  
+
   const syntaxValidator = new ManifestSyntaxValidator();
   const isValid = syntaxValidator.validateManifest(new Manifest(parsedManifest));
   if (!isValid) {
