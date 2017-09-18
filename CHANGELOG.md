@@ -6,6 +6,12 @@ This project is following [Semantic Versioning](http://semver.org)
 
 ### Added
 
+ - support for manifest version 2.3.0 
+
+## [0.6.0][] - 2017-09-18
+
+### Added
+
  - support for validating multiple manifest versions
  - schema for manifest version 2.2.0 which renames the top-level key "state" to "storage"
 
@@ -184,3 +190,6 @@ This project is following [Semantic Versioning](http://semver.org)
 ## [0.1.0]  - 2017-04-24
 
 * Initial public release
+
+[Unreleased]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/Deskpro/deskproapps-dpat/tree/v0.6.0

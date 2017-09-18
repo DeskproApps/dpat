@@ -20,13 +20,20 @@ test('test validateUsingVersionSchema and validate return true for valid support
 
   for (const manifest of manifests) {
     let isValid = false;
+    let validator = new SyntaxValidator();
+    let error = '';
 
-    isValid = new SyntaxValidator().validateManifest(manifest);
+    isValid = validator.validateManifest(manifest);
+    error = validator.getErrorsAsString();
+    expect(error).toBe('');
     expect(isValid).toBe(true);
 
     const version = versions.pop();
     const schema = SchemaRegistry.getSchema(version);
-    isValid = new SyntaxValidator().validate(manifest, schema);
+    validator = new SyntaxValidator();
+    isValid = validator.validate(manifest, schema);
+    error = validator.getErrorsAsString();
+    expect(error).toBe('');
     expect(isValid).toBe(true);
   }
   done();

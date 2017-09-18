@@ -19,7 +19,9 @@ class Validator
   validate(manifest)
   {
     const src = new ManifestResolver().resolveSourceFromPath(manifest);
-    if (!src) { return false; }
+    if (!src) {
+      return false;
+    }
 
     if (src.name !== 'manifest.json') {
       throw new Error(`Expected an absolute path to file named manifest.json, got instead: ${manifest}`);
@@ -28,14 +30,18 @@ class Validator
     let parsedManifest;
     try {
       parsedManifest = JSON.parse(fs.readFileSync(src.path, "utf8").toString("utf8"));
-    } catch (e) { /** ignore it **/ }
+    } catch (e) {
+      console.log(e);
+    }
 
     if (!parsedManifest) {
       throw new Error('could not parse manifest');
     }
 
-    const isSyntaxValid = new ManifestSyntaxValidator().validateManifest(new Manifest(parsedManifest));
+    const syntaxValidator = new ManifestSyntaxValidator();
+    const isSyntaxValid = syntaxValidator.validateManifest(new Manifest(parsedManifest));
     if (!isSyntaxValid) {
+      console.error(syntaxValidator.getErrorsAsString());
       return false;
     }
 

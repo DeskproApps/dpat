@@ -17,7 +17,7 @@
   "dependencies": {},
   "devDependencies": {},
   "deskpro" : {
-    "version": "2.1.0",
+    "version": "2.2.0",
     "title": "app-title",
     "isSingle": true,
     "scope": "agent",

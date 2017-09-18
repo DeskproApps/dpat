@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 const Manifest = require('./Manifest');
+const ManifestNormalizer = require('./ManifestNormalizer');
 
 const mapProperties = function (target, source, mappings)
 {
@@ -84,12 +85,43 @@ class Builder
   }
 
   /**
+   * @param {String} name
+   * @param {String} url
+   * @return {Builder}
+   */
+  setTarget(name, url)
+  {
+    const newTarget = { target: name, url: url };
+    if (! this.props.targets || ! (this.props.targets instanceof Array) || 0 === this.props.targets.length ) {
+      this.props.targets = [ newTarget ];
+      return this;
+    }
+
+    const newTargets = this.props.targets.filter(function(target) { return target.target !== name; })
+    newTargets.push(newTarget);
+    this.props.targets = newTargets;
+    return this;
+  }
+
+  /**
    * @return {Manifest}
    */
   build ()
   {
-    const props = JSON.parse(JSON.stringify(this.props));
+    const json = this.buildJSON();
+    const props = JSON.parse(json);
+
     return new Manifest(props);
+  }
+
+  /**
+   * @return {String}
+   */
+  buildJSON()
+  {
+    const normalizer = new ManifestNormalizer();
+    let props = normalizer.normalizeSettings(this.props);
+    return JSON.stringify(props);
   }
 }
 
