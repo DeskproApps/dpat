@@ -1,6 +1,17 @@
 const Schemas = require('./Schemas');
 
-class SchemaRegistry {
+class SchemaRegistry
+{
+  /**
+   * Returns a list of available schema versions
+   *
+   * @return {Array}
+   */
+  static getVersions()
+  {
+    return Object.keys(Schemas);
+  }
+
   /**
    * Returns the JSON schema for the given version
    * 

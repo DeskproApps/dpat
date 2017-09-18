@@ -2,11 +2,12 @@ const fs = require('fs');
 
 const Builder = require('../../../main/javascript/Manifest/Builder');
 const Manifest = require('../../../main/javascript/Manifest/Manifest');
-const ManifestSchema = require('../../../main/javascript/Manifest/ManifestSchema');
+const SchemaRegistry = require('../../../main/javascript/Manifest/SchemaRegistry');
+
 
 test('can build from src', done =>
 {
-  const manifests = ManifestSchema.getVersions()
+  const manifests = SchemaRegistry.getVersions()
       .map(version => {
         return {
           name: 'manifest.json',
@@ -16,7 +17,7 @@ test('can build from src', done =>
       .map((src) => new Builder().setPropsFromSource(src).build())
   ;
 
-  const packageJsonManifests = ManifestSchema.getVersions()
+  const packageJsonManifests = SchemaRegistry.getVersions()
     .map(version => {
       return {
         name: 'package.json',

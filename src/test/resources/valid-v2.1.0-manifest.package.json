@@ -25,7 +25,10 @@
       { "target": "ticket-sidebar", "url": "html/index.html" }
     ],
     "settings": [],
-    "deskpro_api_tags": ["tickets.*"],
-    "external_apis": []
+    "deskproApiTags": ["tickets.*"],
+    "externalApis": [
+      "/^https?://([^.]+\\.)*mailchimp.com/?.*$/"
+    ],
+    "additional_field": "custom_value"
   }
 }

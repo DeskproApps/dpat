@@ -45,7 +45,9 @@
       }
     ],
     "settings": [],
-    "deskpro_api_tags": ["tickets.*"],
-    "external_apis": []
+    "deskproApiTags": ["tickets.*"],
+    "externalApis": [
+      "/^https?://([^.]+\\.)*mailchimp.com/?.*$/"
+    ]
   }
 }

@@ -7,10 +7,12 @@ This project is following [Semantic Versioning](http://semver.org)
 ### Added
 
  - support for validating multiple manifest versions
+ - schema for manifest version 2.2.0 which renames the top-level key "state" to "storage"
 
 ### Changed
 
  - made `appVersion` a required key from versions 2.1.0 and up
+ - SyntaxValidator returns more helpful error messages
  - changelog using [keep a changelog](http://keepachangelog.com/en/0.3.0/) format
  
 ## [0.5.2][] - 2017-08-09

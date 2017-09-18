@@ -2,6 +2,9 @@ const Schemas = Object.assign({}, {
   '2.1.0': {
     type: "object",
     properties: {
+      appVersion: {
+        type: 'string'
+      },
       id: {
         type: 'string'
       },
@@ -49,7 +52,7 @@ const Schemas = Object.assign({}, {
         }
       }
     },
-    required: ["name", "description", "author", "scope", "targets"],
+    required: ["appVersion", "name", "description", "author", "scope", "targets"],
     definitions: {
       state : {
         type: "object",
@@ -171,7 +174,7 @@ const Schemas = Object.assign({}, {
       }
     },
     additionalProperties: false,
-    required: ["name", "description", "author", "scope", "targets"],
+    required: ["appVersion", "name", "description", "author", "scope", "targets"],
     definitions: {
       storage : {
         type: "object",
