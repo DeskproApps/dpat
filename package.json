@@ -79,6 +79,7 @@
   },
   "devDependencies": {
     "changelog-verify": "1.0.4",
+    "recursive-copy": "^2.0.6",
     "version-changelog": "2.1.0"
   }
 }
