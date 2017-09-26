@@ -18,8 +18,8 @@ class ManifestNormalizer
       const added = newPermissions.map(function(storage) {
           return storage.name;
         })
-          .filter(function(name) { return !!name;})
-        ;
+        .filter(function(name) { return !!name;})
+      ;
 
       let retainedPermissions = [];
       if (manifest.storage && manifest.storage instanceof Array) {
