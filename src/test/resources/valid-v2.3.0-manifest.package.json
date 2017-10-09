@@ -97,13 +97,13 @@
       {
         "type": "dataJson",
         "alias": "trello-cards",
-        "enabled": true,
+        "title": "Trello cards",
         "attachedTo": "ticket"
       },
       {
         "type": "date",
         "alias": "adate",
-        "enabled": true,
+        "title": "A date",
         "attachedTo": "ticket"
       }
     ],
