@@ -391,9 +391,9 @@ const Schemas = Object.assign({}, {
           type: { type: "string", "enum": ["dataJson", "dataList", "data", "date", "dateTime", "text", "textarea", "textEmail", "textUrl", "toggle", "choice"] },
           attachedTo: { type: "string", "enum": ["ticket", "person", "organization"] },
           alias: { type: "string", pattern: "^[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]*" },
-          enabled: { type: "boolean" }
+          title: { type: "string", pattern: ".+"}
         },
-        required: [ "type", "alias", "enabled", "attachedTo" ],
+        required: [ "type", "alias", "attachedTo", "title" ],
       },
 
       author: {

@@ -4,6 +4,12 @@ This project is following [Semantic Versioning](http://semver.org)
 
 ## [Unreleased][]
 
+### Fixed
+
+ - removed obsolete property named `enabled` from the custom field manifest definition 
+ - add required property named `title` to the custom field manifest definition
+
+
 ## [0.7.0][] - 2017-10-05
 
 ### Added
