@@ -9,6 +9,7 @@ program
     .command("server <path>", "starts a local http server that can run and test an application stored at <path>")
     .command("package <path>", "compiles, bundles and packages the application repository stored at [path] for distribution and release")
     .command("compile <path>", "compiles the application repository stored at [path]")
+    .command("compile-installer <path>", "compiles the installer for the application stored at [path]")
     .command("verify <path>", "verifies the distribution folder specified by [path] is valid")
     .command("clean <path>", "removes any previous build output")
     .command("test <path>", "runs the project's tests")
