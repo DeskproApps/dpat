@@ -12,7 +12,9 @@
     "release": "npm_bump",
     "dpat": "node src/main/javascript/command/dpat.js",
     "test": "jest src/test",
-    "version": "version-changelog CHANGELOG.md && changelog-verify CHANGELOG.md && git add CHANGELOG.md"
+    "version": "version-changelog CHANGELOG.md && changelog-verify CHANGELOG.md && git add CHANGELOG.md",
+    "installer": "INSTALLER_VER=0.2.2; cd target; FILE=$(npm pack @deskproapps/app-installer@$INSTALLER_VER); mv $FILE app-installer.tgz",
+    "postinstall": "npm run installer"
   },
   "repository": {
     "type": "git",
@@ -69,20 +71,20 @@
     "shelljs": "0.7.7",
     "stats-webpack-plugin": "0.6.0",
     "style-loader": "0.16.1",
+    "targz": "1.0.1",
     "url-loader": "0.6.2",
     "webpack": "2.3.3",
     "webpack-chunk-hash": "0.4.0",
     "webpack-dev-server": "2.4.2",
     "webpack-manifest-plugin": "1.1.0",
-    "write-file-webpack-plugin": "4.0.2"
+    "write-file-webpack-plugin": "4.0.2",
+    "recursive-copy": "2.0.6"
   },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
-    "@deskproapps/app-installer": "0.2.2",
     "changelog-verify": "1.0.4",
-    "recursive-copy": "2.0.6",
     "version-changelog": "2.1.0"
   }
 }

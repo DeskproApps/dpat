@@ -4,6 +4,14 @@ This project is following [Semantic Versioning](http://semver.org)
 
 ## [Unreleased][]
 
+### Added
+
+ - add a command to bundle the default app installer together with the app
+
+### Changed
+
+ - regenerate npm-shrinkwrap.json
+
 ## [0.7.1][] - 2017-10-09
 
 ### Fixed

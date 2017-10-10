@@ -1,6 +1,10 @@
 const path = require('path');
 const fs = require('fs');
 const copy = require('recursive-copy');
+const execSync = require('child_process').execSync;
+const targz = require('targz');
+const shelljs = require('shelljs');
+
 
 const project = require('../Project');
 const ManifestResolver = require('../Manifest').Resolver;
@@ -30,7 +34,33 @@ const addInstallTarget = (projectDir) =>
 
 class InstallerBuilder
 {
-  build(installerDir, projectDir, webpackConfig)
+  buildFromPackage(pkg, projectDir, cb)
+  {
+    const dest = path.resolve(projectDir, 'target', 'app-installer');
+    shelljs.rm('-rf', `${dest}`);
+
+    const buildFromdDist = this.buildFromDist.bind(this);
+    targz.decompress({ src: pkg,  dest: dest}, function (err) {
+      if (err) { cb(err); }
+      buildFromdDist(dest + '/package', projectDir);
+      cb()
+    });
+  }
+
+  buildFromDist(installerDir, projectDir)
+  {
+    copyInstaller(installerDir, projectDir, function(error, results) {
+      if (error) {
+        console.log('Error: failed to copy installer files');
+        console.log('Error: ' + error);
+        process.exit(1);
+      }
+    });
+
+    addInstallTarget(projectDir);
+  }
+
+  buildFromSource(installerDir, projectDir, webpackConfig)
   {
     const dpProject = project.newInstance();
 
@@ -44,15 +74,7 @@ class InstallerBuilder
       process.exit(1);
     }
 
-    copyInstaller(installerDir, projectDir, function(error, results) {
-      if (error) {
-        console.log('Error: failed to copy installer files');
-        console.log('Error: ' + error);
-        process.exit(1);
-      }
-    });
-
-    addInstallTarget(projectDir);
+    this.buildFromDist(installerDir, projectDir);
   }
 }
 
