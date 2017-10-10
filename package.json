@@ -58,6 +58,7 @@
     "empty-module": "0.0.2",
     "expose-loader": "0.7.3",
     "extract-text-webpack-plugin": "2.1.0",
+    "file-loader": "1.1.5",
     "jest": "^20.0.4",
     "jsonschema": "1.1.1",
     "node-sass": "4.5.2",
@@ -68,6 +69,7 @@
     "shelljs": "0.7.7",
     "stats-webpack-plugin": "0.6.0",
     "style-loader": "0.16.1",
+    "url-loader": "0.6.2",
     "webpack": "2.3.3",
     "webpack-chunk-hash": "0.4.0",
     "webpack-dev-server": "2.4.2",
@@ -78,8 +80,9 @@
     "access": "public"
   },
   "devDependencies": {
+    "@deskproapps/app-installer": "0.2.2",
     "changelog-verify": "1.0.4",
-    "recursive-copy": "^2.0.6",
+    "recursive-copy": "2.0.6",
     "version-changelog": "2.1.0"
   }
 }
