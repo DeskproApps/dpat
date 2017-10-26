@@ -8,6 +8,7 @@ const __path = require("path");
 const AsyncAction = require('../../../commander/AsyncAction');
 const WebpackConfig = require('../Project/WebpackConfig');
 const InstallerBuilder = require('../Installer/InstallerBuilder');
+const InstallerBuildStrategy = require('../Installer/InstallerBuildStrategy');
 
 /**
  * @param {String} path
@@ -23,28 +24,18 @@ function action(path, cmd, done)
     projectDir = fs.realpathSync(__path.resolve('.'));
   }
 
-  const buildCb = function() {
+  const bundleDone = function() {
     console.log('SUCCESS: Installer packaged');
     done();
   };
 
-  const installerBuilder = new InstallerBuilder();
-
-  if (cmd.compile) {
-    const webpackConfig = WebpackConfig.buildCompileConfig();
-    const src = fs.realpathSync(__path.resolve(__dirname, '../../../../node_modules/@deskpro/app-installer'));
-    installerBuilder.buildFromSource(src, projectDir, webpackConfig);
-    buildCb();
-    return;
-  }
-
-  const pkg = fs.realpathSync(__path.resolve(__dirname, '../../../../target/app-installer.tgz'));
-  installerBuilder.buildFromPackage(pkg, projectDir, buildCb);
+  const installerStrategy = new InstallerBuildStrategy();
+  const bundleStrategy = installerStrategy.resolveStrategy(projectDir);
+  bundleStrategy(new InstallerBuilder(), bundleDone);
 }
 
 program
   .version("0.1.0", "-V, --version")
   .arguments("<path>")
-  .option("-c, --compile", "compile the installer instead of using the packaged version")
   .action(AsyncAction(action))
   .parse(process.argv);

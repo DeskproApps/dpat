@@ -1,10 +1,8 @@
 const path = require('path');
 const fs = require('fs');
 const copy = require('recursive-copy');
-const execSync = require('child_process').execSync;
 const targz = require('targz');
 const shelljs = require('shelljs');
-
 
 const project = require('../Project');
 const ManifestResolver = require('../Manifest').Resolver;
@@ -34,10 +32,19 @@ const addInstallTarget = (projectDir) =>
 
 class InstallerBuilder
 {
+  /**
+   * @param {String} projectDir
+   * @return {String}
+   */
+  getTargetDestination(projectDir)
+  {
+    return path.resolve(projectDir, 'target', 'app-installer');
+  }
+
   buildFromPackage(pkg, projectDir, cb)
   {
-    const dest = path.resolve(projectDir, 'target', 'app-installer');
-    shelljs.rm('-rf', `${dest}`);
+    const dest = this.getTargetDestination(projectDir);
+    shelljs.rm('-rf', dest);
 
     const buildFromdDist = this.buildFromDist.bind(this);
     targz.decompress({ src: pkg,  dest: dest}, function (err) {
