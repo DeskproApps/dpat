@@ -16,40 +16,45 @@ class InstallerBuildStrategy
       const indexFilenames = ['index.js', 'index.jsx'];
       for (const filename of indexFilenames) {
         if (fs.existsSync(path.resolve(customInstallerDir, filename))) {
-          console.log('using custom strategy');
-          return this.customStrategy.bind(this, projectDir);
+          console.log('will build custom installer');
+          return this.customStrategyInPlace.bind(this, projectDir);
         }
       }
     }
-
+    console.log('will build default installer');
     return this.defaultStrategy.bind(this, projectDir);
   }
 
   /**
+   * Builds the installer in its own dist folder, useful in dev mode because it does not copy all 4k packages
+   *
    * @param {String} projectDir
    * @param {InstallerBuilder} builder
    * @param {Function} cb
    */
-  customStrategy2(projectDir, builder, cb)
+  customStrategyInPlace(projectDir, builder, cb)
   {
-    const dest = builder.getTargetDestination(projectDir);
-    // shelljs.rm('-rf', dest);
+    const installerDir = path.resolve(projectDir, "node_modules", "@deskpro", "apps-installer");
+    const customInstallerTarget = path.resolve(installerDir, "src", "settings");
+    shelljs.rm('-rf', customInstallerTarget);
+
 
     const copyOptions = { overwrite: true, expand: true, dot: true };
 
     const onCustomInstallerFilesReady = function (err) {
-      builder.buildFromSource(dest, projectDir, WebpackConfig.buildCompileConfig());
+      builder.buildFromSource(installerDir, projectDir, WebpackConfig.buildCompileConfig());
       cb();
     };
 
     let customInstallerSrc = path.resolve(projectDir, "src", "installer");
     customInstallerSrc = fs.realpathSync(customInstallerSrc);
 
-    const customInstallerTarget = path.resolve(dest, "src", "settings");
     copy(customInstallerSrc, customInstallerTarget, copyOptions, onCustomInstallerFilesReady);
   }
 
   /**
+   * Builds the installer under the apps target folder
+   *
    * @param {String} projectDir
    * @param {InstallerBuilder} builder
    * @param {Function} cb
@@ -81,7 +86,6 @@ class InstallerBuildStrategy
 
     let installerDir = path.resolve(projectDir, "node_modules", "@deskpro", "apps-installer");
     installerDir = fs.realpathSync(installerDir);
-    console.log('copying from ', installerDir, 'to', dest, copyOptions) ;
     copy(installerDir, dest, copyOptions, onInstallerFilesReady);
   }
 

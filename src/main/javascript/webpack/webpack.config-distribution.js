@@ -12,7 +12,6 @@ module.exports = function (env) {
   );
 
   const resources = dpat.Resources.copyDescriptors(buildManifest, PROJECT_ROOT_PATH);
-  const bundlePackages = dpat.BuildUtils.bundlePackages(PROJECT_ROOT_PATH, 'devDependencies');
   const babelOptions = dpat.Babel.resolveOptions(PROJECT_ROOT_PATH, { babelrc: false });
   // the relative path of the assets inside the distribution bundle
   const ASSET_PATH = 'assets';
@@ -23,8 +22,8 @@ module.exports = function (env) {
   configParts.push({
     devtool: DEBUG ? 'source-map' : false,
     entry: {
-      main: [ path.resolve(PROJECT_ROOT_PATH, 'src/webpack/entrypoint.js') ],
-      vendor: bundlePackages
+      main: [ path.resolve(PROJECT_ROOT_PATH, 'src/webpack/entrypoint.js') ]
+      //vendor bundle created by CommonsChunkPlugin
     },
     externals: {
       'react': 'React',
@@ -37,8 +36,6 @@ module.exports = function (env) {
           loader: 'babel-loader',
           include: [
             path.resolve(PROJECT_ROOT_PATH, 'src/main/javascript'),
-            path.resolve(PROJECT_ROOT_PATH, 'node_modules', '@deskpro', 'apps-sdk-core'),
-            path.resolve(PROJECT_ROOT_PATH, 'node_modules', '@deskpro', 'apps-sdk-react')
           ],
           options: babelOptions
         },
@@ -77,7 +74,15 @@ module.exports = function (env) {
       // replace a standard webpack chunk hashing with custom (md5) one
       new dpat.Webpack.WebpackChunkHash(),
       // vendor libs + extracted manifest
-      new dpat.Webpack.optimize.CommonsChunkPlugin({ name: ['vendor', 'manifest'], minChunks: Infinity }),
+      new dpat.Webpack.optimize.CommonsChunkPlugin({
+        name: ['vendor'],
+        minChunks: function (module) {
+          // this assumes your vendor imports exist in the node_modules directory
+          return module.context && module.context.indexOf("node_modules") !== -1;
+        }
+      }),
+      new dpat.Webpack.optimize.CommonsChunkPlugin({ name: ['manifest'], minChunks: Infinity }),
+
       // export map of chunks that will be loaded by the extracted manifest
       new dpat.Webpack.ChunkManifestPlugin({ filename: 'manifest.json', manifestVariable: 'webpackManifest' }),
       // mapping of all source file names to their corresponding output file

@@ -14,7 +14,6 @@ module.exports = function (env)
   );
 
   const resources = dpat.Resources.copyDescriptors(buildManifest, PROJECT_ROOT_PATH);
-  const bundlePackages = dpat.BuildUtils.bundlePackages(PROJECT_ROOT_PATH, 'devDependencies');
   const babelOptions = dpat.Babel.resolveOptions(PROJECT_ROOT_PATH, { babelrc: false });
 
   // emulate the Files API path which is used by deskpro to fetch the app files
@@ -52,20 +51,16 @@ module.exports = function (env)
     entry: {
       main: [
         `webpack-dev-server/client?http://localhost:31080`,
-        path.resolve(PROJECT_ROOT_PATH, 'src/webpack/entrypoint.js')
-      ],
-      vendor: bundlePackages
+        path.resolve(PROJECT_ROOT_PATH, 'src/webpack/entrypoint.js'),
+      ]
     },
     module: {
       loaders: [
         {
           test: /\.jsx?$/,
           loader: 'babel-loader',
-          include: [
-            path.resolve(PROJECT_ROOT_PATH, 'src/main/javascript'),
-            path.resolve(PROJECT_ROOT_PATH, 'node_modules', '@deskpro', 'apps-sdk-core'),
-            path.resolve(PROJECT_ROOT_PATH, 'node_modules', '@deskpro', 'apps-sdk-react')
-          ]
+          include: [ path.resolve(PROJECT_ROOT_PATH, 'src/main/javascript') ],
+          options: babelOptions
         },
         {
           test: /\.css$/,
