@@ -5,6 +5,9 @@ const copy = require('recursive-copy');
 
 const WebpackConfig = require('../Project/WebpackConfig');
 
+const INSTALLER_PACKAGE_NAME = 'apps-installer';
+const INSTALLER_PACKAGE = path.resolve(__dirname, `../../../../target/${INSTALLER_PACKAGE_NAME}.tgz`);
+
 class InstallerBuildStrategy
 {
   resolveStrategy(projectDir)
@@ -34,7 +37,7 @@ class InstallerBuildStrategy
    */
   customStrategyInPlace(projectDir, builder, cb)
   {
-    const installerDir = path.resolve(projectDir, "node_modules", "@deskpro", "apps-installer");
+    const installerDir = path.resolve(projectDir, "node_modules", "@deskpro", INSTALLER_PACKAGE_NAME);
     const customInstallerTarget = path.resolve(installerDir, "src", "settings");
     shelljs.rm('-rf', customInstallerTarget);
 
@@ -84,7 +87,7 @@ class InstallerBuildStrategy
       copy(customInstallerSrc, customInstallerTarget, copyOptions, onCustomInstallerFilesReady);
     };
 
-    let installerDir = path.resolve(projectDir, "node_modules", "@deskpro", "apps-installer");
+    let installerDir = path.resolve(projectDir, "node_modules", "@deskpro", INSTALLER_PACKAGE_NAME);
     installerDir = fs.realpathSync(installerDir);
     copy(installerDir, dest, copyOptions, onInstallerFilesReady);
   }
@@ -96,7 +99,7 @@ class InstallerBuildStrategy
    */
   defaultStrategy(projectDir, builder, cb)
   {
-    const pkg = fs.realpathSync(path.resolve(__dirname, '../../../../target/app-installer.tgz'));
+    const pkg = fs.realpathSync(INSTALLER_PACKAGE);
     builder.buildFromPackage(pkg, projectDir, cb);
   }
 }

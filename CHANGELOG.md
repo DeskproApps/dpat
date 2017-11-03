@@ -4,6 +4,11 @@ This project is following [Semantic Versioning](http://semver.org)
 
 ## [Unreleased][]
 
+### Fixed
+
+ - incorrect path to default installer bundle
+ - upgrade apps-installer to v0.3.2
+
 ## [0.9.2][] - 2017-10-27
 
 ### Fixed
