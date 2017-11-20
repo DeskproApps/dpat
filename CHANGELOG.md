@@ -4,6 +4,8 @@ This project is following [Semantic Versioning](http://semver.org)
 
 ## [Unreleased][]
 
+## [0.9.4][] - 2017-11-20
+
 ### Changed
 
  - upgrade apps-installer to v0.4.0
@@ -241,7 +243,8 @@ This project is following [Semantic Versioning](http://semver.org)
 
 * Initial public release
 
-[Unreleased]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.9.3...HEAD
+[Unreleased]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.9.4...HEAD
+[0.9.4]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.9.3...v0.9.4
 [0.9.3]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.9.2...v0.9.3
 [0.9.2]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.9.1...v0.9.2
 [0.9.1]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.9.0...v0.9.1
