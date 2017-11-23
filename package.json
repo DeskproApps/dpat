@@ -13,7 +13,7 @@
     "dpat": "node src/main/javascript/command/dpat.js",
     "test": "jest src/test",
     "version": "version-changelog CHANGELOG.md && changelog-verify CHANGELOG.md && git add CHANGELOG.md",
-    "installer": "INSTALLER_VER=0.4.0; cd target; FILE=$(npm pack @deskpro/apps-installer@$INSTALLER_VER); mv $FILE apps-installer.tgz",
+    "installer": "INSTALLER_VER=0.4.1; cd target; FILE=$(npm pack @deskpro/apps-installer@$INSTALLER_VER); mv $FILE apps-installer.tgz",
     "postinstall": "npm run installer"
   },
   "repository": {

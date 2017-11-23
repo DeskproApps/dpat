@@ -4,6 +4,10 @@ This project is following [Semantic Versioning](http://semver.org)
 
 ## [Unreleased][]
 
+### Changed
+
+ - upgrade apps-installer to v0.4.1
+
 ## [0.9.4][] - 2017-11-20
 
 ### Changed
