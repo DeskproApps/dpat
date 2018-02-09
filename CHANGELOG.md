@@ -4,6 +4,8 @@ This project is following [Semantic Versioning](http://semver.org)
 
 ## [Unreleased][]
 
+- default `process.env.NODE_ENV` to `production` when packaging the app for distribution with webpack  
+
 ## [0.9.6][] - 2017-11-24
 
 ### Changed

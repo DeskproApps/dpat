@@ -5,6 +5,7 @@ module.exports = function (env) {
 
   const PROJECT_ROOT_PATH = env && env.DP_PROJECT_ROOT ? env.DP_PROJECT_ROOT : path.resolve(__dirname, '../../');
   const DEBUG = env && env.NODE_ENV === 'development';
+  const ENVIRONMENT =  env && env.NODE_ENV ? env.NODE_ENV : 'production';
 
   const buildManifest = new dpat.BuildManifest(
     PROJECT_ROOT_PATH,
@@ -61,7 +62,8 @@ module.exports = function (env) {
 
       new dpat.Webpack.DefinePlugin({
         DEBUG: DEBUG,
-        DPAPP_MANIFEST: JSON.stringify(buildManifest.getContent())
+        DPAPP_MANIFEST: JSON.stringify(buildManifest.getContent()),
+        'process.env.NODE_ENV': JSON.stringify(ENVIRONMENT)
       }),
 
       // for stable builds, in production we replace the default module index with the module's content hashe
