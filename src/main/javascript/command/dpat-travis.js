@@ -7,6 +7,31 @@ function onAfterSuccess(done)
 {
   console.log('environment var keys ', Object.keys(process.env));
 
+  const envVars = [
+    'TRAVIS_ALLOW_FAILURE',
+    'TRAVIS_BRANCH',
+    'TRAVIS_BUILD_DIR',
+    'TRAVIS_BUILD_ID',
+    'TRAVIS_COMMIT',
+    'TRAVIS_COMMIT_MESSAGE',
+    'TRAVIS_EVENT_TYPE',
+    'TRAVIS_JOB_ID',
+    'TRAVIS_JOB_NUMBER',
+    'TRAVIS_OS_NAME',
+    'TRAVIS_OSX_IMAGE',
+    'TRAVIS_PULL_REQUEST',
+    'TRAVIS_PULL_REQUEST_BRANCH',
+    'TRAVIS_PULL_REQUEST_SHA',
+    'TRAVIS_PULL_REQUEST_SLUG',
+    'TRAVIS_REPO_SLUG'
+  ];
+
+  for (const v of envVars) {
+    console.log('TRAVIS VAR ', v, process.env[v]);
+  }
+
+  console.log('pull request env var keys ', Object.keys(process.env));
+
   if ( process.env.TRAVIS_PULL_REQUEST === "false" ) {
     console.log('skip adding artifact download url. not a pull request');
     return ;
