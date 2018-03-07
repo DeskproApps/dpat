@@ -67,22 +67,24 @@ function githubPRComment(travisEnv, opts, done)
 function action(subcommand, path, cmd, done)
 {
   if (subcommand === 'pr-comment') {
+
     if (! cmd.s3target) {
       console.error('ERROR: missing required argument: --s3-target-path');
       process.exit(1);
-
-      if (process.env.GITHUB_TOKEN) {
-        const opts = { debug: !!cmd.debug, s3TargetPath: cmd.s3target };
-        githubPRComment(process.env, opts, done);
-        return ;
-      }
-      console.warn('skip adding comment on pull request. no vcs configuration detected');
-      done();
     }
+
+    if (process.env.GITHUB_TOKEN) {
+      const opts = { debug: !!cmd.debug, s3TargetPath: cmd.s3target };
+      githubPRComment(process.env, opts, done);
+      return ;
+    }
+
+    console.warn('skip adding comment on pull request. no vcs configuration detected');
+    done();
   }
 
-  console.warn('skip adding comment on pull request. no vcs configuration detected');
-  done();
+  console.error('ERROR: invalid subcommand');
+  process.exit(1);
 }
 
 program
