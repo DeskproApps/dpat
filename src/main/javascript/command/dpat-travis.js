@@ -11,7 +11,7 @@ function onAfterSuccess(done)
   }
 
   if ( !process.env.GITHUB_TOKEN ){
-    console.log('skip adding artifact download url', process.env.TRAVIS_PULL_REQUEST);
+    console.log('skip adding artifact download url. looks like environment variable GITHUB_TOKEN is not set');
     return ;
   }
 
