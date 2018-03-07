@@ -2,6 +2,7 @@
 
 const program = require("commander");
 const https = require("https");
+const AsyncAction = require('../../../commander/AsyncAction');
 
 function onAfterSuccess(done)
 {
@@ -47,7 +48,7 @@ function onAfterSuccess(done)
   }
 
   const requestBody = JSON.stringify({
-    body: `Download url: https://s3.amazonaws.com/${process.env.ARTIFACTS_BUCKET}/${process.env.TRAVIS_REPO_SLUG}/${process.env.TRAVIS_BUILD_NUMBER}/dist/app.zip`
+    body: `TRAVIS-CI: download build from https://s3.amazonaws.com/${process.env.ARTIFACTS_BUCKET}/${process.env.TRAVIS_REPO_SLUG}/${process.env.TRAVIS_BUILD_NUMBER}/dist/app.zip`
   });
 
   const requestOptions = {
@@ -57,7 +58,8 @@ function onAfterSuccess(done)
     headers: {
       'Content-Length': Buffer.byteLength(requestBody),
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': `token ${process.env.GITHUB_TOKEN}`
+      'Authorization': `token ${process.env.GITHUB_TOKEN}`,
+      'User-Agent': '@deskpro/apps-youtrack'
     }
   };
 
@@ -106,5 +108,5 @@ program
   .version("0.1.0", "-V, --version")
   .arguments("<path>", "r")
   .option("-s, --step <step>", "the travis step to invoke inside the project at <path>")
-  .action(action)
+  .action(AsyncAction(action))
   .parse(process.argv);
