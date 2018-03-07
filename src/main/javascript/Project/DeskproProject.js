@@ -117,10 +117,7 @@ Run the following command manually: npm install --save-exact ${absoluteDestinati
   {
     const projectDistDir = path.join(projectRoot, 'dist');
 
-    const artifactName = packageBuilder.resolveArtifactFileNameFromManifestDir(projectDistDir);
-    if (!artifactName) {
-      throw new Error(`could not resolve artifact name: in ${projectRoot}`);
-    }
+    const artifactName = 'app.zip';
     return packageBuilder.build(projectDistDir, artifactName);
   }
 

@@ -38,8 +38,7 @@ class PackageBuilder
       return null;
     }
 
-    return 'app.zip';
-    // return convertAppName(appName, 'zip');
+    return convertAppName(appName, 'zip');
   }
 
   /**
