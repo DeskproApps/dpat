@@ -5,6 +5,8 @@ const https = require("https");
 
 function onAfterSuccess(done)
 {
+  console.log('environment var keys ', Object.keys(process.env));
+
   if ( process.env.TRAVIS_PULL_REQUEST === "false" ) {
     console.log('skip adding artifact download url. not a pull request');
     return ;
