@@ -72,23 +72,23 @@ function action(subcommand, path, cmd, done)
       process.exit(1);
 
       if (process.env.GITHUB_TOKEN) {
-        githubPRComment(process.env, {
-          debug: !!cmd.debug,
-          s3TargetPath: cmd.s3target
-        }, done);
+        const opts = { debug: !!cmd.debug, s3TargetPath: cmd.s3target };
+        githubPRComment(process.env, opts, done);
         return ;
       }
-      console.warn('skip adding comment on pull request. no vcs configuration detected')
+      console.warn('skip adding comment on pull request. no vcs configuration detected');
+      done();
     }
   }
 
-  console.warn('skip adding comment on pull request. no vcs configuration detected')
+  console.warn('skip adding comment on pull request. no vcs configuration detected');
+  done();
 }
 
 program
   .version("0.1.0", "-V, --version")
   .arguments("<subcommand> <path> ", "r")
-  .option("-t, --s3-target-path <s3target>", "the s3 path under which the build artifacts will be uploaded")
+  .option("-t, --s3target <s3target>", "the s3 path under which the build artifacts will be uploaded")
   .option("-d, --debug [debug]", "turn on debugging")
   .action(AsyncAction(action))
   .parse(process.argv);
