@@ -21,6 +21,12 @@ class SyntaxValidator
     
     try {
       const version = manifest.getVersion();
+
+      if (! version) {
+        this.errors.push('manifest requires property "version"');
+        return false;
+      }
+
       if (!SchemaRegistry.hasSchema(version)) {
         this.errors.push(`manifest version ${version} not supported`);
         return false;

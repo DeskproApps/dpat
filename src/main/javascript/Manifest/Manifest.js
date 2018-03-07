@@ -12,18 +12,17 @@ class Manifest
       file: typeof source === 'object' ? source.file : "", // path to file
     };
   }
-  
+
+  /**
+   * @returns {string}
+   */
+  getName() { return this.props.name; }
+
   /**
    * @returns {string}
    * @throws {Error} When the manifest is missing the "version" prop
    */
-  getVersion()
-  {
-    if (!this.props.version) {
-      throw new Error('manifest requires property "version"');
-    }
-    return this.props.version;
-  }
+  getVersion() { return this.props.version; }
 
   getSourceType() { return this.source.type; }
 

@@ -5,7 +5,6 @@ const path = require("path");
 const shelljs = require('shelljs');
 const spawn = require('child_process').spawn;
 const spawnSync = require('child_process').spawnSync;
-const archiver = require("archiver");
 
 const ManifestResolver = require('../Manifest').Resolver;
 const ManifestSyntaxValidator = require('../Manifest').SyntaxValidator;
@@ -111,25 +110,18 @@ Run the following command manually: npm install --save-exact ${absoluteDestinati
 
   /**
    * @param {String} projectRoot
-   * @param {String} packageFilename
+   * @param {PackageBuilder} packageBuilder
    * @return {String} the full path to the created artifact
    */
-  runPackage (projectRoot, packageFilename)
+  runPackage (projectRoot, packageBuilder)
   {
     const projectDistDir = path.join(projectRoot, 'dist');
-    const output = fs.createWriteStream(path.join(projectDistDir, packageFilename));
-    const archive = archiver('zip', {
-      store: true // Sets the compression method to STORE.
-    });
 
-    archive.directory(path.join(projectDistDir, 'assets'), 'assets', {});
-    archive.directory(path.join(projectDistDir, 'html'), 'html', {});
-    archive.file(path.join(projectDistDir, 'manifest.json'), { name: 'manifest.json' });
-
-    archive.pipe(output);
-    archive.finalize();
-
-    return path.join(projectRoot, 'dist', packageFilename);
+    const artifactName = packageBuilder.resolveArtifactFileNameFromManifestDir(projectDistDir);
+    if (!artifactName) {
+      throw new Error(`could not resolve artifact name: in ${projectRoot}`);
+    }
+    return packageBuilder.build(projectDistDir, artifactName);
   }
 
   runPrepareCompile(projectDir)

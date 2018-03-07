@@ -31,6 +31,6 @@ function action(path)
 
 program
   .version("0.1.0", "-V, --version")
-  .arguments("<path>", "validates an application manifest")
+  .arguments("<path>", "checks if a folder is an distribution folder")
   .action(action)
   .parse(process.argv);

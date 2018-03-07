@@ -14,4 +14,6 @@ program
     .command("clean <path>", "removes any previous build output")
     .command("test <path>", "runs the project's tests")
     .command("deploy [path] <instance>", "packages a distribution and deploys the package to a deskpro instance")
+    .command("bintray-descriptor <path>", "creates or updates the bintray descriptor using information from package.json")
+    .command("bintray-prepare <path>", "creates or updates the bintray descriptor using information from package.json")
     .parse(process.argv);
