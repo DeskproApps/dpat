@@ -4,6 +4,8 @@ This project is following [Semantic Versioning](http://semver.org)
 
 ## [Unreleased][]
 
+## [0.10.0][] - 2018-03-08
+
 ### Added
 
  - new `dpat travis pr-comment` command that adds a comment with a link to the build artifact to a pull requests (only github supported at the moment)
@@ -266,7 +268,8 @@ This project is following [Semantic Versioning](http://semver.org)
 
 * Initial public release
 
-[Unreleased]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.9.7...HEAD
+[Unreleased]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.10.0...HEAD
+[0.10.0]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.9.7...v0.10.0
 [0.9.7]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.9.6...v0.9.7
 [0.9.6]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.9.5...v0.9.6
 [0.9.5]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.9.4...v0.9.5
