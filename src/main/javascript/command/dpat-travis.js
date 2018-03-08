@@ -43,11 +43,18 @@ function githubPRComment(travisEnv, opts, done)
     if (opts.debug) {
       console.log('statusCode:', res.statusCode);
       console.log('headers:', res.headers);
-      res.on('data', (chunk) => {
-        console.log(`BODY: ${chunk}`);
-      });
     }
-    res.on('end', () => done());
+
+    // need to add a data event listener so that the end event is triggered
+    res.on('data', (chunk) => {
+      if (opts.debug) {
+        console.log(`BODY: ${chunk}`);
+      }
+    });
+
+    res.on('end', () => {
+      done();
+    });
   });
 
   request.on('error', (e) => {
