@@ -5,6 +5,9 @@ install:
   - npm install
 script:
   - npm test
+branches:
+  only:
+  - master
 deploy:
   provider: npm
   api_key: $NPM_TOKEN
