@@ -4,6 +4,13 @@ This project is following [Semantic Versioning](http://semver.org)
 
 ## [Unreleased][]
 
+### Added
+
+ - new `dpat travis pr-comment` command that adds a comment with a link to the build artifact to a pull requests (only github supported at the moment)
+ 
+ - ability to set the build artifact file name after the package name instead of using the default one 
+
+
 ## [0.9.7][] - 2018-02-09
 
 - default `process.env.NODE_ENV` to `production` when packaging the app for distribution with webpack  
