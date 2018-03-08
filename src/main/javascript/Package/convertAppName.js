@@ -1,9 +1,11 @@
+const path = require('path');
+
 module.exports = function (appName, extension) {
   "use strict";
 
   // normalized scoped named
   const scopedNameRegex = /^@([^\/]+)[\/]([^\/]+)/;
-  const artifactName =  name.replace(scopedNameRegex, function (match, vendor, name) {
+  const artifactName =  appName.replace(scopedNameRegex, function (match, vendor, name) {
     return [vendor, name].join('-');
   });
 
