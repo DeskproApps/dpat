@@ -4,6 +4,10 @@ This project is following [Semantic Versioning](http://semver.org)
 
 ## [Unreleased][]
 
+## Added
+
+ - schema for apps manifest v2.4.0
+
 ## [0.10.1][] - 2018-03-27
 
 ### Fixed
