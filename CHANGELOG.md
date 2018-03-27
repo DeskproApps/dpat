@@ -4,6 +4,12 @@ This project is following [Semantic Versioning](http://semver.org)
 
 ## [Unreleased][]
 
+## [0.10.1][] - 2018-03-27
+
+### Fixed
+
+ - webpack and webpack-dev-server executables not resolved properly when `apps-dpat` is a dependency for node versions 8 and up
+
 ## [0.10.0][] - 2018-03-08
 
 ### Added
@@ -268,7 +274,8 @@ This project is following [Semantic Versioning](http://semver.org)
 
 * Initial public release
 
-[Unreleased]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.10.0...HEAD
+[Unreleased]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.10.1...HEAD
+[0.10.1]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.10.0...v0.10.1
 [0.10.0]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.9.7...v0.10.0
 [0.9.7]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.9.6...v0.9.7
 [0.9.6]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.9.5...v0.9.6
