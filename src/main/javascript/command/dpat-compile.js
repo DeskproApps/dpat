@@ -3,13 +3,20 @@
 const program = require("commander");
 const archiver = require("archiver");
 const fs = require("fs");
-
-const defaultWebpackConfig = require.resolve('../webpack/webpack.config-distribution');
 const __path = require("path");
-const webpackPath = __path.resolve(__dirname, '../../../../node_modules/.bin/webpack');
-const dpatModules = __path.resolve(__dirname, '../../../../node_modules');
 
+const webpackResolvers = require('../webpack/resolvers');
+const defaultWebpackConfig = require.resolve('../webpack/webpack.config-distribution');
+
+const webpackPath = webpackResolvers.resolveBinWebpack("webpack");
+if (! webpackPath) {
+  console.error('could not determine the path the webpack executable');
+  process.exit(1);
+}
+
+const dpatModules = __path.resolve(__dirname, '../../../../node_modules');
 const project = require("../Project");
+
 /**
  * @param {String} path
  * @param {Command} cmd

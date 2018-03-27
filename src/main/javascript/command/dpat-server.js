@@ -3,8 +3,16 @@
 const program = require("commander");
 const project = require("../Project").newInstance();
 const __path = require("path");
+
 const defaultWebpackConfig = require.resolve('../webpack/webpack.config-development');
-const webpackDevServerPath = __path.resolve(__dirname, '../../../../node_modules/.bin/webpack-dev-server');
+const webpackResolvers = require('../webpack/resolvers');
+
+const webpackDevServerPath = webpackResolvers.resolveBinWebpackDevServer('webpack-dev-server');
+if (! webpackDevServerPath) {
+  console.error('could not determine the path the webpack-dev-server executable');
+  process.exit(1);
+}
+
 const dpatModules = __path.resolve(__dirname, '../../../../node_modules');
 /**
  * @param {String} path
