@@ -7,7 +7,7 @@
   },
   "description": "app-description",
   "name": "package-name",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "title": "app-title",
   "isSingle": true,
   "targets": [
