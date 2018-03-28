@@ -1,0 +1,115 @@
+{
+  "name": "package-name",
+  "version": "0.2.3",
+  "description": "app-description",
+  "main": "index.js",
+  "scripts": { },
+  "repository": { },
+  "keywords": [],
+  "author": {
+    "name": "DeskPRO Apps",
+    "email": "apps@deskpro.com",
+    "url": "https://www.deskpro.com"
+  },
+  "license": "MIT",
+  "bugs": {},
+  "homepage": "",
+  "dependencies": {},
+  "devDependencies": {},
+  "deskpro" : {
+    "version": "2.4.0",
+    "title": "app-title",
+    "isSingle": true,
+    "targets": [
+      { "target": "ticket-sidebar", "url": "html/index.html" }
+    ],
+    "storage": [
+      {
+        "name": "install",
+        "isBackendOnly": false,
+        "permRead": "EVERYBODY",
+        "permWrite": "OWNER"
+      },
+      {
+        "name": "auth",
+        "isBackendOnly": false,
+        "permRead": "OWNER",
+        "permWrite": "OWNER"
+      },
+      {
+        "name": "cards",
+        "isBackendOnly": false,
+        "permRead": "EVERYBODY",
+        "permWrite": "EVERYBODY"
+      }
+    ],
+    "settings": [
+      {
+        "type": "text",
+        "name": "apiKey",
+        "title": "Third party api key",
+
+        "defaultValue": "",
+        "required": true,
+        "validator": {
+          "type": "regex",
+          "pattern": "^.+"
+        },
+        "isBackendOnly": true
+      },
+      {
+        "type": "textarea",
+        "name": "welcomeMessage",
+        "title": "Welcome message displayed by the app",
+
+        "defaultValue": "",
+        "required": true,
+        "validator": {
+          "type": "regex",
+          "pattern": "^.+"
+        }
+      },
+      {
+        "type": "choice",
+        "name": "foobar",
+        "title": "choose foo or bar",
+
+        "defaultValue": "foo",
+        "required": true,
+        "multi": false,
+        "choices": [
+          { "title": "Bar", "value": "bar" },
+          { "title": "Foo", "value": "foo" }
+        ]
+      },
+      {
+        "type": "boolean",
+        "name": "yesorno",
+        "title": "choose yes or no",
+
+        "defaultValue": false,
+        "required": true
+      }
+    ],
+
+    "customFields" : [
+      {
+        "type": "dataJson",
+        "alias": "trello-cards",
+        "title": "Trello cards",
+        "attachedTo": "ticket"
+      },
+      {
+        "type": "date",
+        "alias": "adate",
+        "title": "A date",
+        "attachedTo": "ticket"
+      }
+    ],
+
+    "deskproApiTags": ["tickets.*"],
+    "domainWhitelist": [
+      "/^https?://([^.]+\\.)*mailchimp.com/?.*$/"
+    ]
+  }
+}
