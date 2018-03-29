@@ -4,6 +4,10 @@ This project is following [Semantic Versioning](http://semver.org)
 
 ## [Unreleased][]
 
+### Changed
+
+ - allow storage ACL to override the ACL of the setting with the same name
+
 ## [0.10.2][] - 2018-03-27
 
 ## Added
