@@ -8,7 +8,7 @@ This project is following [Semantic Versioning](http://semver.org)
 
 ### Changed
 
- - upgrade `@deskpro/apps-installer` to version `v0.4.4`
+ - upgrade `@deskpro/apps-installer` to version `v0.4.5`
 
 ## [0.10.3][] - 2018-03-29
 
