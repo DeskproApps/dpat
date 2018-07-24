@@ -4,6 +4,11 @@ This project is following [Semantic Versioning](http://semver.org)
 
 ## [Unreleased][]
 
+### Changed
+
+ - upgrade jest to version `^23.4.1`
+ - add node_modules folder from the project compiled by apps-dpat to NODE_PATH to allow projects to override packages like for example jest
+
 ## [0.10.5][] - 2018-04-23
 
 ## Added

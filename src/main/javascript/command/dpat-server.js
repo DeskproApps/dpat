@@ -16,16 +16,18 @@ if (! webpackDevServerPath) {
 const dpatModules = __path.resolve(__dirname, '../../../../node_modules');
 /**
  * @param {String} path
+ * @param port
  * @param {Command} cmd
  */
 function action(path, port, cmd)
 {
     const projectDir = __path.resolve(path);
 
+
     const runConfig = {
         webpackDev: webpackDevServerPath,
         webpackConfig: defaultWebpackConfig,
-        modulePaths: [ dpatModules ]
+        modulePaths: [ __path.join(projectDir, 'node_modules'),  dpatModules ]
     };
     if (! project.startDevServer(projectDir, runConfig)) {
         console.error(`ERROR: could not start dev server at ${path}`);

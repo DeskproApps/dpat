@@ -36,7 +36,11 @@ function action(path, cmd)
     process.exit(1);
   }
 
-  const runConfig = { webpack: webpackPath, webpackConfig: defaultWebpackConfig, modulePaths: [ dpatModules ]};
+  const runConfig = {
+    webpack: webpackPath,
+    webpackConfig: defaultWebpackConfig,
+    modulePaths: [ __path.join(projectDir, 'node_modules'), dpatModules ]
+  };
   if (! dpProject.runCompile(projectDir, runConfig)) {
     process.exit(1);
   }

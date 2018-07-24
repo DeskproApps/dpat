@@ -23,12 +23,18 @@ function action(path, cmd)
   }
   const dpProject = project.newInstance();
 
-  const runConfig = { jest: jestPath, modulePaths: [ dpatModules ] };
+  const runConfig = {
+    jest: jestPath,
+    modulePaths: [
+      __path.join(projectDir, 'node_modules'),
+      dpatModules
+    ]
+  };
   if (! dpProject.runTests(projectDir, runConfig)) {
     process.exit(1);
   }
 
-  console.log('SUCCESS: Project compiled');
+  console.log('SUCCESS: Tests run');
 }
 
 program
