@@ -4,6 +4,8 @@ This project is following [Semantic Versioning](http://semver.org)
 
 ## [Unreleased][]
 
+## [0.10.6][] - 2018-07-24
+
 ### Changed
 
  - upgrade jest to version `^23.4.1`
@@ -303,7 +305,8 @@ This project is following [Semantic Versioning](http://semver.org)
 
 * Initial public release
 
-[Unreleased]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.10.5...HEAD
+[Unreleased]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.10.6...HEAD
+[0.10.6]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.10.5...v0.10.6
 [0.10.5]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.10.4...v0.10.5
 [0.10.4]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.10.3...v0.10.4
 [0.10.3]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.10.2...v0.10.3
