@@ -4,6 +4,10 @@ This project is following [Semantic Versioning](http://semver.org)
 
 ## [Unreleased][]
 
+### Fixed
+
+ - `dpat bundle-installer .` failure under node 8 with npm 5.6 due to incorrect path resolution
+
 ## [0.10.6][] - 2018-07-24
 
 ### Changed

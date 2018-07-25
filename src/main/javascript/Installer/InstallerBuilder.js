@@ -5,16 +5,18 @@ const targz = require('targz');
 const shelljs = require('shelljs');
 
 const project = require('../Project');
+const projectWebpack = require('../Project/webpack');
 const ManifestResolver = require('../Manifest').Resolver;
 const ManifestBuilder = require('../Manifest').Builder;
 
 const copyInstaller = (installerDir, projectDir, copyCallback) =>
 {
-  const copyOptions = { overwrite: true,
-    expand: true,
-    dot: false,
-    junk: false,
-    filter: /(install\..+|install-.+)$/,
+  const copyOptions = {
+    overwrite:  true,
+    expand:     true,
+    dot:        false,
+    junk:       false,
+    filter:     /(install\..+|install-.+)$/,
   };
 
   copy(path.resolve(installerDir, 'dist'), path.resolve(projectDir, 'dist'), copyOptions, copyCallback);
@@ -58,8 +60,8 @@ class InstallerBuilder
   {
     copyInstaller(installerDir, projectDir, function(error, results) {
       if (error) {
-        console.log('Error: failed to copy installer files');
-        console.log('Error: ' + error);
+        console.error('Error: failed to copy installer files');
+        console.error('Error: ' + error);
         process.exit(1);
       }
     });
@@ -67,17 +69,18 @@ class InstallerBuilder
     addInstallTarget(projectDir);
   }
 
-  buildFromSource(installerDir, projectDir, webpackConfig)
+  buildFromSource(installerDir, projectDir)
   {
     const dpProject = project.newInstance();
 
     if (! dpProject.runPrepareCompile(installerDir)) {
-      console.log('Error: failed to compile installer');
+      console.error('Error: failed to compile installer');
       process.exit(1);
     }
 
+    const webpackConfig = projectWebpack.getCompileConfig(installerDir);
     if (! dpProject.runCompile(installerDir, webpackConfig)) {
-      console.log('Error: failed to compile installer');
+      console.error('Error: failed to compile installer');
       process.exit(1);
     }
 
