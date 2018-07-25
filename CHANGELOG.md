@@ -4,6 +4,8 @@ This project is following [Semantic Versioning](http://semver.org)
 
 ## [Unreleased][]
 
+## [0.10.7][] - 2018-07-25
+
 ### Fixed
 
  - `dpat bundle-installer .` failure under node 8 with npm 5.6 due to incorrect path resolution
@@ -309,7 +311,8 @@ This project is following [Semantic Versioning](http://semver.org)
 
 * Initial public release
 
-[Unreleased]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.10.6...HEAD
+[Unreleased]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.10.7...HEAD
+[0.10.7]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.10.6...v0.10.7
 [0.10.6]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.10.5...v0.10.6
 [0.10.5]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.10.4...v0.10.5
 [0.10.4]: https://github.com/Deskpro/deskproapps-dpat/compare/v0.10.3...v0.10.4
